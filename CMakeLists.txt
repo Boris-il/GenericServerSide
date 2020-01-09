@@ -3,4 +3,4 @@ project(GenericServerSide)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(GenericServerSide main.cpp)
+add_executable(GenericServerSide main.cpp ServerTypes.h)
