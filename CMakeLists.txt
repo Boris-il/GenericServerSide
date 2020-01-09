@@ -5,4 +5,4 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_CXX_FLAGS -pthread)
 
-add_executable(GenericServerSide main.cpp ClientHandler.h Solver.h HandlerTypes.h CacheManager.h ServerTypes.h MySerialServer.cpp MyTestClientHandler.cpp)
+add_executable(GenericServerSide MySerialServer.cpp MyTestClientHandler.cpp ClientHandler.h Solver.h HandlerTypes.h CacheManager.h ServerTypes.h SolverTypes.h StringReverser.cpp FileCacheManager.cpp CacheManagerTypes.h main.cpp)

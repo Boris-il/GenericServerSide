@@ -5,7 +5,7 @@
 #ifndef GENERICSERVERSIDE__SERVERTYPES_H_
 #define GENERICSERVERSIDE__SERVERTYPES_H_
 #include <iostream>
-#include <bits/socket.h>
+#include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
 #include "ClientHandler.h"
@@ -14,9 +14,9 @@
 namespace server_side {
 class Server {
  public:
-  virtual void open(int port, ClientHandler c);
+  virtual void open(int port, ClientHandler *c) = 0;
 
-  virtual void stop();
+  virtual void stop() = 0;
 };
 }
 
@@ -25,14 +25,10 @@ class MySerialServer : public server_side::Server {
  public:
 
   //todo implement
-  virtual void open(int port, ClientHandler c);
-  virtual void stop();
-  static void start(int *socket, sockaddr_in addr, ClientHandler *client_handler);
-  int getPort();
-
-
-
+  virtual void open(int port, ClientHandler *c);
+  virtual void stop() {};
 };
 
+static void start(int *socket, sockaddr_in *addr, ClientHandler *client_handler);
 
 #endif //GENERICSERVERSIDE__SERVERTYPES_H_

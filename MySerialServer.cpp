@@ -5,7 +5,47 @@
 #include <thread>
 #include "ServerTypes.h"
 
-void MySerialServer::open(int port, ClientHandler c) {
+//namespace boot {
+//class Main {
+// public:
+//  Main() {};
+//  int main();
+//};
+//}
+//
+//int boot::Main::main() {
+//  cout << "hello" << endl;
+//  return 0;
+//}
+//
+//boot::Main m;
+//int b = m.main();
+
+void start(int *socketfd, sockaddr_in *address, ClientHandler *c) {
+
+  struct timeval tv;
+  tv.tv_sec = 60;
+  tv.tv_usec = 0;
+
+  bool x=true;
+  while (x){
+    //accept
+    int client_socket1 = accept(*socketfd, (struct sockaddr *) &address, (socklen_t *) &address);
+    if (client_socket1 == -1) {
+      cerr << "Error accepting client" << endl;
+      //return -4;
+    }
+
+    c->handleClient(client_socket1); //handle client
+    close(client_socket1); //finish, so close the connection with client
+    setsockopt(*socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv); // create timeout to next client
+  }
+
+  close(*socketfd);
+}
+
+
+void MySerialServer::open(int port, ClientHandler *c) {
   cout << "starting socket" << endl;
   int socketfd = socket(AF_INET, SOCK_STREAM, 0);
   if (socketfd == -1) {
@@ -32,28 +72,9 @@ void MySerialServer::open(int port, ClientHandler c) {
     // return -3;
   }
 
-  std::thread t1(start, &socketfd, &address, &c);
+
+  std::thread t1(start, &socketfd, &address, c);
+  this_thread::sleep_for(chrono::seconds(1));
   t1.join();
 }
 
-void MySerialServer::start(int *socketfd, sockaddr_in address, ClientHandler *c) {
-
-  struct timeval tv;
-  tv.tv_sec = 60;
-  tv.tv_usec = 0;
-
-  while (!shouldStop){
-    //accept
-    int client_socket1 = accept(*socketfd, (struct sockaddr *) &address, (socklen_t *) &address);
-    if (client_socket1 == -1) {
-      cerr << "Error accepting client" << endl;
-      //return -4;
-    }
-
-    c->handleClient(client_socket1); //handle client
-    close(client_socket1); //finish, so close the connection with client
-    setsockopt(*socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv); // create timeout to next client
-  }
-
-  close(*socketfd);
-}

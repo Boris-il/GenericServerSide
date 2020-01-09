@@ -5,9 +5,14 @@
 #ifndef GENERICSERVERSIDE_CMAKE_BUILD_DEBUG_SOLVER_H_
 #define GENERICSERVERSIDE_CMAKE_BUILD_DEBUG_SOLVER_H_
 
+template <class P, class S>
 class Solver{
+  P* m_problem;
+  S* m_solution;
  public:
-  //todo solve Problem and return solution as classes ?
-  virtual Solution solve(Problem p);
+  // constructor
+  Solver(){};
+
+  virtual S solve(P &p) = 0;
 };
 #endif //GENERICSERVERSIDE_CMAKE_BUILD_DEBUG_SOLVER_H_

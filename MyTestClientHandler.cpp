@@ -7,7 +7,8 @@
 
 void MyTestClientHandler::handleClient(int socket) {
   string buffer = "";
-  while (!shouldStop) {
+  bool x = true;
+  while (x) {
     char line[1024] = {0};
     read(socket, line, 1024);
     string buffer2 = line;
@@ -16,11 +17,11 @@ void MyTestClientHandler::handleClient(int socket) {
     string secondN = buffer.substr(buffer.find("\n") + 1, buffer.length());
     string problem=firstN, solution;
     //todo: take firstN and convert it to problem
-    if(this->cm.isProblemExist(problem)){
-      solution = this->cm.getSolution(problem);
+    if(this->m_cm->isProblemExist(problem)){
+      solution = this->m_cm->getSolution(problem);
     } else{
-      solution = this->solver.solve(problem);
-      this->cm.saveSolution(solution);
+      solution = this->m_solver->solve(problem);
+      this->m_cm->saveSolution(problem, &solution);
     }
     //todo: send solution
 
@@ -28,4 +29,3 @@ void MyTestClientHandler::handleClient(int socket) {
   }
 
 }
-MyTestClientHandler::MyTestClientHandler(const Solver &solver, const CacheManager &cm) : solver(solver), cm(cm) {}
