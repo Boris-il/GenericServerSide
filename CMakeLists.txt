@@ -3,4 +3,6 @@ project(GenericServerSide)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(GenericServerSide main.cpp ServerTypes.h)
+set(CMAKE_CXX_FLAGS -pthread)
+
+add_executable(GenericServerSide main.cpp ClientHandler.h Solver.h HandlerTypes.h CacheManager.h ServerTypes.h MySerialServer.cpp)
