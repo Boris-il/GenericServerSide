@@ -8,6 +8,7 @@
 class CacheManager{
   //todo isExist?, get, set.
   //todo Problem Class ? Solution class?
+ public:
   virtual bool isProblemExist(Problem p);
   virtual Solution getSolution(Problem p);
   virtual void saveSolution(Problem p, Solution s);

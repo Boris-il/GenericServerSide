@@ -13,6 +13,8 @@ class MyTestClientHandler : public ClientHandler{
  public:
   Solver solver;
   CacheManager cm;
+  void handleClient(int socket);
+  MyTestClientHandler(const Solver &solver, const CacheManager &cm);
 
 };
 

@@ -9,7 +9,7 @@ using namespace std;
 class ClientHandler{
  public:
   //todo input and outuput stream.
-  virtual void handleClient();
+  virtual void handleClient(int socket);
 };
 
 

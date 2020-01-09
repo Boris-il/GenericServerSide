@@ -22,14 +22,14 @@ class Server {
 
 class MySerialServer : public server_side::Server {
 
-  int m_port;
  public:
 
   //todo implement
   virtual void open(int port, ClientHandler c);
   virtual void stop();
-  void start();
+  static void start(int *socket, sockaddr_in addr, ClientHandler *client_handler);
   int getPort();
+
 
 
 };
