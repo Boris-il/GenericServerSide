@@ -15,10 +15,11 @@ class MyTestClientHandler : public ClientHandler{
  public:
   Solver<string, string> *m_solver;
   CacheManager<string, string> *m_cm;
+
   void handleClient(int socket);
-  MyTestClientHandler(StringReverser *solver, FileCacheManager<string> *cm) {
-    this->m_solver = solver;
-    this->m_cm = cm;
+  MyTestClientHandler(Solver<string, string> * s, CacheManager<string, string> * m) {
+    this->m_solver = s;
+    this->m_cm = m;
   }
 
 };

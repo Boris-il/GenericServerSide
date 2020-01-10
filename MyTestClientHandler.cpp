@@ -6,13 +6,13 @@
 #include "HandlerTypes.h"
 
 void MyTestClientHandler::handleClient(int socket) {
-  string buffer = "";
+  string buffer;
   bool x = true;
   while (x) {
     char line[1024] = {0};
     read(socket, line, 1024);
     string buffer2 = line;
-    buffer = buffer + buffer2;
+    buffer += buffer2;
     string firstN = buffer.substr(0, buffer.find("\n"));
     string secondN = buffer.substr(buffer.find("\n") + 1, buffer.length());
     string problem=firstN, solution;

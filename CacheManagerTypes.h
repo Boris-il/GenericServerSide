@@ -25,8 +25,9 @@ class FileCacheManager : public CacheManager<string, S> {
 
   void writeToFile(string key, S *obj) {
     // generate name of file
-    string fileName = S::class_name;
-    fileName.append(":");
+    //   string fileName = S::class_name;
+    string fileName = "";
+    //   fileName.append(":");
     fileName.append(key);
     // declare binary file for output
     ofstream output_file{fileName, ios::binary | ios::trunc};
@@ -43,8 +44,9 @@ class FileCacheManager : public CacheManager<string, S> {
   S readFromFile(string key) {
     S returnObject;
     // generate name of the file to look for
-    string fileName = S::class_name;
-    fileName.append(":");
+    //   string fileName = S::class_name;
+    string fileName = key;
+    //   fileName.append(":");
     fileName.append(key);
     // declare binary file for input
     ifstream input{fileName, ios::binary};
@@ -74,22 +76,22 @@ class FileCacheManager : public CacheManager<string, S> {
     if (it != this->my_cache.end()) {
       auto val_to_replace = it;
       this->lru_list.erase(val_to_replace->second);
-      pair<string, S> p_temp(key, obj);
+      pair<string, S> p_temp(key, *obj);
       this->lru_list.push_front(p_temp);
       this->itr = lru_list.begin();
       val_to_replace->second = this->itr;
     } else {
       // if not found - create new entry
-      pair<string, S> p_temp(key, obj);
+      pair<string, S> p_temp(key, *obj);
       this->lru_list.push_front(p_temp);
       this->itr = lru_list.begin();
       this->my_cache[key] = this->itr;
     }
     // save/rewrite object to file
-    writeToFile(key, &obj);
+    writeToFile(key, obj);
   }
 
-  S& getSolution(string key) {
+  S &getSolution(string key) {
     S returnObj;
     // search in memory
     auto it = my_cache.find(key);
@@ -112,7 +114,7 @@ class FileCacheManager : public CacheManager<string, S> {
       try {
         returnObj = readFromFile(key);
         // insert file to cache manager
-        insert(key, returnObj);
+        saveSolution(key, &returnObj);
         return returnObj;
       } catch (const char *e) {
         throw e;
@@ -125,7 +127,7 @@ class FileCacheManager : public CacheManager<string, S> {
     try {
       return_obj = getSolution(key);
       return true;
-    } catch (const char *e){
+    } catch (const char *e) {
       return false;
     }
   }
@@ -142,8 +144,5 @@ class FileCacheManager : public CacheManager<string, S> {
 
 // END OF CLASS
 };
-
-
-
 
 #endif //GENERICSERVERSIDE__CACHEMANAGERTYPES_H_

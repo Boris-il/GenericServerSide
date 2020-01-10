@@ -7,10 +7,10 @@
 #include "SolverTypes.h"
 #include "CacheManagerTypes.h"
 
-//int main(int argc, char** argv) {
-//  server_side::Server *s = new MySerialServer();
-//  Solver<string, string> *sl = new StringReverser("yuval");
-//  CacheManager<string> *m = new FileCacheManager()
-//  ClientHandler *c = new MyTestClientHandler()
-//  s->open(5600, )
-//}
+int main(int argc, char** argv) {
+  server_side::Server *s = new MySerialServer();
+  Solver<string, string> *sl = new StringReverser();
+  CacheManager<string, string> *m = new FileCacheManager<string>(5);
+  ClientHandler *c = new MyTestClientHandler(sl, m);
+  s->open(5600, c);
+}
