@@ -21,6 +21,7 @@ class MyTestClientHandler : public ClientHandler{
     this->m_solver = s;
     this->m_cm = m;
   }
+  int connectToClient();
 
 };
 

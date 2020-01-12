@@ -22,26 +22,33 @@
 //int b = m.main();
 
 void start(int *socketfd, sockaddr_in *address, ClientHandler *c) {
+  unsigned len = sizeof(*address);
+  socklen_t* addrlen = &len;
 
   struct timeval tv;
   tv.tv_sec = 60;
   tv.tv_usec = 0;
+  int socketNum = *socketfd;
+  while (1){
 
-  bool x=true;
-  while (x){
     //accept
-    int client_socket1 = accept(*socketfd, (struct sockaddr *) &address, (socklen_t *) &address);
+    int client_socket1 = accept(socketNum, (struct sockaddr*)&address, addrlen);
+
     if (client_socket1 == -1) {
       cerr << "Error accepting client" << endl;
+      //break ???
+      break;
       //return -4;
+    }else{
+      c->handleClient(client_socket1); //handle client
+      close(client_socket1); //finish, so close the connection with client
+      setsockopt(socketNum, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv); // create timeout to next client
     }
 
-    c->handleClient(client_socket1); //handle client
-    close(client_socket1); //finish, so close the connection with client
-    setsockopt(*socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv); // create timeout to next client
+
   }
 
-  close(*socketfd);
+  close(socketNum);
 }
 
 

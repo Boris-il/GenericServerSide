@@ -47,7 +47,7 @@ class FileCacheManager : public CacheManager<string, S> {
     //   string fileName = S::class_name;
     string fileName = key;
     //   fileName.append(":");
-    fileName.append(key);
+   // fileName.append(key);
     // declare binary file for input
     ifstream input{fileName, ios::binary};
     if (!input) {
@@ -117,6 +117,7 @@ class FileCacheManager : public CacheManager<string, S> {
         saveSolution(key, &returnObj);
         return returnObj;
       } catch (const char *e) {
+        cerr << "non-exist file" << endl;
         throw e;
       }
     }

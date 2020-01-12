@@ -12,5 +12,5 @@ int main(int argc, char** argv) {
   Solver<string, string> *sl = new StringReverser();
   CacheManager<string, string> *m = new FileCacheManager<string>(5);
   ClientHandler *c = new MyTestClientHandler(sl, m);
-  s->open(5600, c);
+  s->open(8081, c);
 }
