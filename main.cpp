@@ -6,6 +6,7 @@
 #include "HandlerTypes.h"
 #include "SolverTypes.h"
 #include "CacheManagerTypes.h"
+#include "MatrixProblem.h"
 
 /*
 int main(int argc, char** argv) {

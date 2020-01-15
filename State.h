@@ -21,8 +21,8 @@ class State {
     this->m_cameFrom = nullptr;
   }
 
-  bool equals(State<T> s) override {
-    return m_state->equal(s.m_state);
+  bool equals(State<T> s) {
+    return this->m_state->equals(s.m_state);
   }
 
   T *getMState() const {
