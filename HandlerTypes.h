@@ -14,15 +14,18 @@
 class MyTestClientHandler : public ClientHandler{
  public:
   Solver<string, string> *m_solver;
-  CacheManager<string, string> *m_cm;
+  CacheManager<string> *m_cm;
 
   void handleClient(int socket);
-  MyTestClientHandler(Solver<string, string> * s, CacheManager<string, string> * m) {
+  MyTestClientHandler(Solver<string, string> * s, CacheManager<string> * m) {
     this->m_solver = s;
     this->m_cm = m;
   }
   int connectToClient();
 
 };
+
+
+
 
 #endif //GENERICSERVERSIDE__HANDLERTYPES_H_

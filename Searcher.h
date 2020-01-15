@@ -9,7 +9,7 @@
 
 template<class S>
 class Searcher {
-//  S search(Searchable<)
+  virtual S search(Searchable<S>) =0;
 
 
 };

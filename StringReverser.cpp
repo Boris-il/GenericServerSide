@@ -4,6 +4,7 @@
 
 #include "SolverTypes.h"
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -14,5 +15,6 @@ string StringReverser::solve(string &str) {
   for (unsigned i = 0; i < (input_len / 2); i++) {
     swap(solution[i], solution[input_len - i - 1]);
   }
+  cout << "the string after reverse is: " << solution << endl;
   return solution;
 }
