@@ -19,7 +19,7 @@ class Searchable {
 
   virtual bool isGoalState(State<T>) = 0;
 
-  virtual list<State<T>> getAllPossible(State<T>) = 0;
+  virtual list<State<T>*> getAllPossible(State<T>) = 0;
 
 };
 

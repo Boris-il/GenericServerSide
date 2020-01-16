@@ -15,14 +15,14 @@ class State {
 
  public:
   // constructor
-  State(T state) {
+  State(T *state) {
     this->m_state = state;
     this->m_cost = 0;
     this->m_cameFrom = nullptr;
   }
 
   bool equals(State<T> s) {
-    return this->m_state->equals(s.m_state);
+    return this->m_state == s.m_state;
   }
 
   T *getMState() const {

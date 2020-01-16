@@ -29,7 +29,7 @@ class Main {
     CacheManager<string> *m = new FileCacheManager<string>();
     Solver<string, string> *sl = new StringReverser();
     //create testClientHandler with string reverser and file cache
-    ClientHandler *c = new MyTestClientHandler(sl, m);
+    ClientHandler *c = new MyClientHandler(sl, m);
     s->open(port, c);
   }
 };
