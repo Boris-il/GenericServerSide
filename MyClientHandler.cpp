@@ -7,6 +7,7 @@
 #include "HandlerTypes.h"
 #include "MatrixProblem.h"
 #include "BestFirstSearch.h"
+using namespace std;
 //
 // Created by yuval on 15/01/2020.
 //
@@ -34,8 +35,9 @@ void MyClientHandler::handleClient(int socket) {
 
     while (ss >> i) { //ignor commas and push to vector.
       oneRowVector.push_back(i);
-      if (ss.peek() == ',')
+      if (ss.peek() == ',') {
         ss.ignore();
+      }
     }
     if (count(firstN.begin(), firstN.end(), ',') == 1 && !startFinishFlag) { //start
       startFinishFlag = true;
@@ -48,10 +50,10 @@ void MyClientHandler::handleClient(int socket) {
     }
     if (finishedBuilding) {
       finishedBuilding = false;
-     auto *problemMatrix = new MatrixProblem<pair<int, int>>(&matrixVector, start, finish);
-     string problem = MatrixProblem<pair<int,int>>::toString(matrixString);
+      auto *problemMatrix = new MatrixProblem<pair<int, int>>(&matrixVector, start, finish);
+      string problem = MatrixProblem<pair<int, int>>::toString(matrixString);
       string solution = "";
-      if(this->m_cm->isProblemExist(problem)) {
+      if (this->m_cm->isProblemExist(problem)) {
         solution = this->m_cm->getSolution(problem);
         solution = solution + "\n";
         const char *msg = solution.c_str();
@@ -62,8 +64,12 @@ void MyClientHandler::handleClient(int socket) {
         }
       } else {
         // TEST - CHECK BEST FS
-        ISearcher<pair<int, int>> *bestFS = new BestFirstSearch<pair<int, int>>();
-        bestFS->search(*problemMatrix);
+         ISearcher<pair<int, int>> *bestFS = new BestFirstSearch<pair<int, int>>();
+        /*bestFS->search(*problemMatrix)*/
+        //TEST - CHECK BFS
+       // ISearcher<pair<int,int>> *bfs = new BFS<pair<int, int>>();
+       // bfs->search(*problemMatrix);
+        //this->m_solver = bfs;
 
 
         // END OF TEST
@@ -77,8 +83,6 @@ void MyClientHandler::handleClient(int socket) {
           cout << "Error sending message" << endl;
         }
       }
-
-
     }
   }
 }

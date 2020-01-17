@@ -50,12 +50,17 @@ class State {
 //    return *(this->m_state);
 //  }
 
+bool operator <(const State<T> & state) const {
+    return this->getMCost() < state.getMCost();
+  }
+
 };
 
 template<class T>
 struct CostComparator {
-  bool operator()(const State<T> a, const State<T> b) const {
-    return a->getMCost() < b->getMCost();
+ public:
+  bool operator()(State<T> & a, State<T> & b) const {
+    return  (a.getMCost() < b.getMCost());
   }
 };
 
