@@ -20,7 +20,9 @@ class ISearcher {
 template<class S>
 class Searcher : public ISearcher<S> {
   //priority_queue<State<S>, CompareCost<S>> openList;
-  multiset<State<S>, CostComparator<S>> *openList = new multiset<State<S>, CostComparator<S>>;
+  // multiset<State<S>, CostComparator<S>> *openList = new multiset<State<S>, CostComparator<S>>;
+  multiset<State<S>> *openList = new multiset<State<S>>;
+
   int evaluatedNodes = 0;
  public:
   /*Searcher() {
@@ -36,8 +38,8 @@ class Searcher : public ISearcher<S> {
   }
 
   bool existInOpenList(State<S> state) {
-    for (auto itr = openList->begin(); itr!=openList->end() ; ++itr) {
-      if (state.equals(*itr)){
+    for (auto itr = openList->begin(); itr != openList->end(); ++itr) {
+      if (state.equals(*itr)) {
         return true;
       }
     }
@@ -77,7 +79,7 @@ template<class S>
 class BFS : public Searcher<S> {
  public:
   State<S> search(Searchable<S> *searchable) {
-   set<State<S>> close;//init close
+    set<State<S>> close;//init close
     this->addToOpenList(searchable->getInitialState()); //init open
     State<S> *n;
 
@@ -87,7 +89,7 @@ class BFS : public Searcher<S> {
         break;
       }
       list<State<S> *> adjacents = searchable->getAllPossible(*n);
-      for (auto itr = adjacents.begin(); itr != adjacents.end(); ++itr ) {
+      for (auto itr = adjacents.begin(); itr != adjacents.end(); ++itr) {
         auto pos = close.find(**itr);
         if (pos == close.end() && !this->openContains(**itr)) {
           //todo not i both of lists

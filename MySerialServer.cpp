@@ -23,34 +23,32 @@
 
 void start(int *socketfd, sockaddr_in *address, ClientHandler *c) {
   unsigned len = sizeof(*address);
-  socklen_t* addrlen = &len;
+  socklen_t *addrlen = &len;
 
   struct timeval tv;
   tv.tv_sec = 60;
   tv.tv_usec = 0;
   int socketNum = *socketfd;
-  while (1){
+  while (1) {
 
     //accept
-    int client_socket1 = accept(socketNum, (struct sockaddr*)&address, addrlen);
+    int client_socket1 = accept(socketNum, (struct sockaddr *) &address, addrlen);
 
     if (client_socket1 == -1) {
       cerr << "Error accepting client" << endl;
       //break ???
       break;
       //return -4;
-    }else{
+    } else {
       c->handleClient(client_socket1); //handle client
       close(client_socket1); //finish, so close the connection with client
-      setsockopt(socketNum, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv); // create timeout to next client
+      setsockopt(socketNum, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv); // create timeout to next client
     }
-
 
   }
 
   close(socketNum);
 }
-
 
 void MySerialServer::open(int port, ClientHandler *c) {
   cout << "starting socket" << endl;
@@ -72,13 +70,12 @@ void MySerialServer::open(int port, ClientHandler *c) {
   struct timeval tv;
   tv.tv_sec = 60;
   tv.tv_usec = 0;
-  setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
+  setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv);
 
   if (listen(socketfd, 5) == -1) {
     cerr << "Error during listening command" << endl;
     // return -3;
   }
-
 
   std::thread t1(start, &socketfd, &address, c);
   this_thread::sleep_for(chrono::seconds(1));

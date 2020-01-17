@@ -7,7 +7,7 @@
 
 #include <algorithm>
 
-template <class T>
+template<class T>
 class State {
   T *m_state;
   double m_cost;
@@ -50,18 +50,29 @@ class State {
 //    return *(this->m_state);
 //  }
 
-bool operator <(const State<T> & state) const {
-    return this->getMCost() < state.getMCost();
+//  bool operator==(const State<T> &obj) const {
+//    return (obj.getMCost() == this->m_cost);
+//  }
+
+  bool operator<(const State<T> &obj) const {
+    return (obj.getMCost() < this->m_cost);
   }
 
 };
 
 template<class T>
-struct CostComparator {
- public:
-  bool operator()(State<T> & a, State<T> & b) const {
-    return  (a.getMCost() < b.getMCost());
+struct std::hash<State<T>> {
+  size_t operator()(const State<T> &obj) const {
+    return hash<double>()(obj.getMCost());
   }
 };
+
+//template<class T>
+//struct CostComparator {
+// public:
+//  bool operator()(State<T> & a, State<T> & b) const {
+//    return  (a.getMCost() < b.getMCost());
+//  }
+//};
 
 #endif //GENERICSERVERSIDE__STATE_H_

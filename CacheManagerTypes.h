@@ -161,7 +161,6 @@ class FileCacheManager : public CacheManager<T> {
   T tempObj;
  public:
 
-
   void saveSolution(string key, T obj) {
     string temp;
     auto itr = mapCache.find(key);

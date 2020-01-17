@@ -16,12 +16,10 @@ class StringReverser : public Solver<string, string> {
  public:
   // constructor
   //StringReverser(string str) : m_str(str) {};
-  StringReverser(){};
+  StringReverser() {};
 
-  virtual string solve(string&) override;
+  virtual string solve(string &) override;
 
 };
-
-
 
 #endif //GENERICSERVERSIDE__SOLVERTYPES_H_

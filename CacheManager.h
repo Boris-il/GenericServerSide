@@ -12,8 +12,8 @@
 #include <fstream>
 
 
-  //todo isExist?, get, set.
-  //todo Problem Class ? Solution class?
+//todo isExist?, get, set.
+//todo Problem Class ? Solution class?
 //  virtual bool isProblemExist(Problem p);
 //  virtual Solution getSolution(Problem p);
 //  virtual void saveSolution(Problem p, Solution s);
@@ -26,6 +26,5 @@ class CacheManager {
   virtual S getSolution(string p) = 0;
   virtual void saveSolution(string p, S s) = 0;
 };
-
 
 #endif //GENERICSERVERSIDE__CACHEMANAGER_H_

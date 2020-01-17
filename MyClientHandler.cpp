@@ -13,7 +13,7 @@ using namespace std;
 //
 void MyClientHandler::handleClient(int socket) {
   string buffer;
-  pair<int, int> start, finish;
+  pair<int, int> *start = nullptr, *finish = nullptr;
   bool startFinishFlag = false, finishedBuilding = false;
   std::vector<vector<int>> matrixVector;
   string matrixString = "";
@@ -41,9 +41,9 @@ void MyClientHandler::handleClient(int socket) {
     }
     if (count(firstN.begin(), firstN.end(), ',') == 1 && !startFinishFlag) { //start
       startFinishFlag = true;
-      start = pair<int, int>(oneRowVector.at(0), oneRowVector.at(1));
+      start = new pair<int, int>(oneRowVector.at(0), oneRowVector.at(1));
     } else if (startFinishFlag) { //finish
-      finish = pair<int, int>(oneRowVector.at(0), oneRowVector.at(1));
+      finish = new pair<int, int>(oneRowVector.at(0), oneRowVector.at(1));
       finishedBuilding = true;
     } else {
       matrixVector.push_back(oneRowVector);
@@ -64,11 +64,11 @@ void MyClientHandler::handleClient(int socket) {
         }
       } else {
         // TEST - CHECK BEST FS
-         ISearcher<pair<int, int>> *bestFS = new BestFirstSearch<pair<int, int>>();
-        /*bestFS->search(*problemMatrix)*/
+        ISearcher<pair<int, int>> *bestFS = new BestFirstSearch<pair<int, int>>();
+        bestFS->search(problemMatrix);
         //TEST - CHECK BFS
-       // ISearcher<pair<int,int>> *bfs = new BFS<pair<int, int>>();
-       // bfs->search(*problemMatrix);
+        // ISearcher<pair<int,int>> *bfs = new BFS<pair<int, int>>();
+        // bfs->search(*problemMatrix);
         //this->m_solver = bfs;
 
 

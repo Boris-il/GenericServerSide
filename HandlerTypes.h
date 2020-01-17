@@ -11,13 +11,13 @@
 #include "SolverTypes.h"
 #include "CacheManagerTypes.h"
 
-class MyTestClientHandler : public ClientHandler{
+class MyTestClientHandler : public ClientHandler {
  public:
   Solver<string, string> *m_solver;
   CacheManager<string> *m_cm;
 
   void handleClient(int socket);
-  MyTestClientHandler(Solver<string, string> * s, CacheManager<string> * m) {
+  MyTestClientHandler(Solver<string, string> *s, CacheManager<string> *m) {
     this->m_solver = s;
     this->m_cm = m;
   }
@@ -25,19 +25,16 @@ class MyTestClientHandler : public ClientHandler{
 
 };
 
-class MyClientHandler : public ClientHandler{
+class MyClientHandler : public ClientHandler {
  public:
   Solver<string, string> *m_solver;
   CacheManager<string> *m_cm;
   void handleClient(int socket);
-  MyClientHandler(Solver<string, string> * s, CacheManager<string> * m){
+  MyClientHandler(Solver<string, string> *s, CacheManager<string> *m) {
     this->m_solver = s;
     this->m_cm = m;
   }
 
 };
-
-
-
 
 #endif //GENERICSERVERSIDE__HANDLERTYPES_H_
