@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 #include "HandlerTypes.h"
 #include "MatrixProblem.h"
+#include "BestFirstSearch.h"
 //
 // Created by yuval on 15/01/2020.
 //
@@ -59,7 +60,13 @@ void MyClientHandler::handleClient(int socket) {
         if (is_sent == -1) {
           cout << "Error sending message" << endl;
         }
-      } else{
+      } else {
+        // TEST - CHECK BEST FS
+        ISearcher<pair<int, int>> *bestFS = new BestFirstSearch<pair<int, int>>();
+        bestFS->search(*problemMatrix);
+
+
+        // END OF TEST
         solution = this->m_solver->solve(problem);
         this->m_cm->saveSolution(problem, solution);
         solution = solution + "\n";

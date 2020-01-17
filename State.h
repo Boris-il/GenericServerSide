@@ -28,22 +28,35 @@ class State {
   T *getMState() const {
     return m_state;
   }
-  void setMState(T *m_state) {
-    State::m_state = m_state;
+  void setMState(T *state) {
+    State::m_state = state;
   }
   double getMCost() const {
     return m_cost;
   }
-  void setMCost(double m_cost) {
-    State::m_cost = m_cost;
+  void setMCost(double cost) {
+    State::m_cost = cost;
   }
   State<T> *getMCameFrom() const {
     return m_cameFrom;
   }
-  void setMCameFrom(State<T> *m_came_from) {
-    m_cameFrom = m_came_from;
+  void setMCameFrom(State<T> *came_from) {
+    m_cameFrom = came_from;
   }
+//  State<T> backTrace() {
+//    while(this->m_cameFrom != nullptr) {
+//      this->m_state = m_cameFrom;
+//    }
+//    return *(this->m_state);
+//  }
 
+};
+
+template<class T>
+struct CostComparator {
+  bool operator()(const State<T> a, const State<T> b) const {
+    return a->getMCost() < b->getMCost();
+  }
 };
 
 #endif //GENERICSERVERSIDE__STATE_H_

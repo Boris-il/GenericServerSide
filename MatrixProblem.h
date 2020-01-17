@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <string>
+#include <climits>
 #include "Searchable.h"
 
 template<class T>
@@ -15,6 +16,18 @@ class MatrixProblem : public Searchable<T> {
   unsigned m_matrix_size;
   State<T> *m_initial;
   State<T> *m_goal;
+
+  State<pair<int, int>> *getMin(list<State<pair<int, int>> *> l) {
+    int min = INT_MAX;
+    State<pair<int, int>> *s = nullptr;
+    for (auto &item : l) {
+      if (item->getMCost() < min) {
+        s = item;
+        l.remove(item);
+      }
+    }
+    return s;
+  }
 
  public:
   // constructor
@@ -45,21 +58,18 @@ class MatrixProblem : public Searchable<T> {
       auto *st = new State<pair<int,int>>(&p);
       possibilities.push_back(st);
     }
-
     // check down cell
     neighbour = this->m_vect[current_i + 1][current_j];
     if (current_i + 1 <= boundary && neighbour->getMCost() != -1) {
       pair<int, int> p(current_i + 1, current_j);
       possibilities.push_back(new State<T>(&p));
     }
-
     // check left cell
     neighbour = this->m_vect[current_i][current_j - 1];
     if (current_j - 1 >= 0 && neighbour->getMCost() != -1) {
       pair<int, int> p(current_i, current_j - 1);
       possibilities.push_back(new State<T>(&p));
     }
-
     // check right cell
     neighbour = this->m_vect[current_i][current_j + 1];
     if (current_j + 1 <= boundary && neighbour->getMCost() != -1) {
@@ -67,7 +77,15 @@ class MatrixProblem : public Searchable<T> {
       possibilities.push_back(new State<T>(&p));
     }
 
-    return possibilities;
+    // sort the list by costs
+    list<State<pair<int, int>> *> final;
+    for (int i = 0; i < possibilities.size(); i++) {
+      State<pair<int, int>> *temp = getMin(possibilities);
+      final.push_front(temp);
+    }
+
+    // return sorted list
+    return final;
   }
 
   vector<vector<State<pair<int, int>> * >> createMatrix(vector<vector<int>> *input) {
