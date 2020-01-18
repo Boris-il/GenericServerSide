@@ -9,6 +9,7 @@
 #include <string>
 #include <climits>
 #include "Searchable.h"
+#include <list>
 
 template<class T>
 class MatrixProblem : public Searchable<T> {
@@ -43,6 +44,49 @@ class MatrixProblem : public Searchable<T> {
 
   bool isGoalState(State<T> state) override {
     return state.equals(*this->m_goal);
+  }
+
+  string getDirection(State<T> a, State<T> b) {
+    // get positions
+    int a_i = a.getMState()->first, a_j = a.getMState()->second;
+    int b_i = b.getMState()->first, b_j = b.getMState()->second;
+
+    if (b_i == a_i) {
+      if (b_j < a_j) {
+        return "LEFT";
+      } else {
+        return "RIGHT";
+      }
+    } else if (b_j == a_j) {
+      if (b_i < a_i) {
+        return "UP";
+      } else {
+        return "DOWN";
+      }
+    }
+    throw "COULD NOT RESOLVE DIRECTION";
+
+  }
+
+  string resolveDirections(State<T> *goal) {
+    list<State<T>> path;
+    string path_str;
+    path.push_front(*goal);
+    while (goal->getMCameFrom() != nullptr) {
+      path.push_front(*goal->getMCameFrom());
+      goal = goal->getMCameFrom();
+    }
+
+    for (auto itr = path.begin(); next(itr) != path.end(); itr++) {
+      try {
+        string d = getDirection(*itr, *next(itr));
+        path_str.append(d + " ");
+      } catch (const char *c) {
+        cerr << c << endl;
+      }
+    }
+    return path_str;
+
   }
 
   list<State<T> *> getAllPossible(State<T> state) override {
@@ -96,16 +140,6 @@ class MatrixProblem : public Searchable<T> {
         possibilities.push_back(st);
       }
     }
-
-    // sort the list by costs
-    /*list<State<pair<int, int>> *> final;
-    for (int i = 0; i < possibilities.size(); i++) {
-      State<pair<int, int>> *temp = getMin(possibilities);
-      final.push_front(temp);
-    }*/
-
-    // return sorted list
-//    return final;
     return possibilities;
   }
 

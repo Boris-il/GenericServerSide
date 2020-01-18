@@ -67,8 +67,9 @@ void MyClientHandler::handleClient(int socket) {
         /*ISearcher<pair<int, int>> *bestFS = new BestFirstSearch<pair<int, int>>();
         bestFS->search(problemMatrix);*/
         //TEST - CHECK BFS
-         ISearcher<pair<int,int>> *bfs = new BFS<pair<int, int>>();
-         State<pair<int,int>> goal = bfs->search(problemMatrix);
+        ISearcher<pair<int, int>> *bfs = new BFS<pair<int, int>>();
+        State<pair<int, int>> goal = bfs->search(problemMatrix);
+        problemMatrix->resolveDirections(&goal);
         //this->m_solver = bfs;
 
 
