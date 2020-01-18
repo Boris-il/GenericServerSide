@@ -39,7 +39,7 @@ void MyTestClientHandler::handleClient(int socket) {
         cout << "Error sending message" << endl;
       }
     } else {
-      solution = this->m_solver->solve(problem);
+      solution = this->m_solver->solve(&problem);
       this->m_cm->saveSolution(problem, solution);
       solution = solution + "\n";
       const char *msg = solution.c_str();

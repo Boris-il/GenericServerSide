@@ -27,6 +27,7 @@ class BestFirstSearch : public Searcher<T> {
       // get successors
       list<State<T> *> successors = searchable->getAllPossible(n);
       for (auto statePtr : successors) {
+        cout << "still here" << endl;
         auto pos = closedList.find(*statePtr);
         // check if successor exists in OPEN and CLOSED
         if (!this->existInOpenList(*statePtr) && pos == closedList.end()) {

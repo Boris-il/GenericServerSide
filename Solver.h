@@ -13,6 +13,6 @@ class Solver {
   // constructor
   Solver() {};
 
-  virtual S solve(P &p) = 0;
+  virtual S solve(P *p) = 0;
 };
 #endif //GENERICSERVERSIDE_CMAKE_BUILD_DEBUG_SOLVER_H_

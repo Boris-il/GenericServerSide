@@ -7,10 +7,12 @@
 #include "HandlerTypes.h"
 #include "MatrixProblem.h"
 #include "BestFirstSearch.h"
+#include "ObjectAdapter.h"
 using namespace std;
 //
 // Created by yuval on 15/01/2020.
 //
+/*
 void MyClientHandler::handleClient(int socket) {
   string buffer;
   pair<int, int> *start = nullptr, *finish = nullptr;
@@ -64,17 +66,23 @@ void MyClientHandler::handleClient(int socket) {
         }
       } else {
         // TEST - CHECK BEST FS
-        /*ISearcher<pair<int, int>> *bestFS = new BestFirstSearch<pair<int, int>>();
-        bestFS->search(problemMatrix);*/
+        */
+/*ISearcher<pair<int, int>> *bestFS = new BestFirstSearch<pair<int, int>>();
+        bestFS->search(problemMatrix);*//*
+
         //TEST - CHECK BFS
-        ISearcher<pair<int, int>> *bfs = new BFS<pair<int, int>>();
-        State<pair<int, int>> goal = bfs->search(problemMatrix);
-        problemMatrix->resolveDirections(&goal);
+         */
+/*ISearcher<pair<int,int>> *bfs = new BFS<pair<int, int>>();
+         State<pair<int,int>> goal = bfs->search(problemMatrix);*//*
+
         //this->m_solver = bfs;
+
+        //OA
+
 
 
         // END OF TEST
-        solution = this->m_solver->solve(problem);
+        solution = this->m_solver->solve(problemMatrix);
         this->m_cm->saveSolution(problem, solution);
         solution = solution + "\n";
         const char *msg = solution.c_str();
@@ -86,4 +94,4 @@ void MyClientHandler::handleClient(int socket) {
       }
     }
   }
-}
+}*/

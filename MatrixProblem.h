@@ -68,7 +68,7 @@ class MatrixProblem : public Searchable<T> {
 
   }
 
-  string resolveDirections(State<T> *goal) {
+  string resolve(State<T> *goal) override {
     list<State<T>> path;
     string path_str;
     path.push_front(*goal);

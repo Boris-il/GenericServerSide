@@ -18,7 +18,7 @@ class StringReverser : public Solver<string, string> {
   //StringReverser(string str) : m_str(str) {};
   StringReverser() {};
 
-  virtual string solve(string &) override;
+  virtual string solve(string *) override;
 
 };
 

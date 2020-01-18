@@ -20,6 +20,8 @@ class Searchable {
 
   virtual list<State<T> *> getAllPossible(State<T>) = 0;
 
+  virtual string resolve(State<T> *state) = 0;
+
 };
 
 #endif //GENERICSERVERSIDE__SEARCHABLE_H_
