@@ -51,7 +51,7 @@ class Searcher : public ISearcher<S> {
     // erase the element
     this->openList->erase(state);
     // update cost
-    state.setMCost(new_cost);
+    state.setSumCost(new_cost);
     // insert back to list
     this->addToOpenList(state);
   }
@@ -68,7 +68,7 @@ class Searcher : public ISearcher<S> {
  protected:
   State<S> popOpenList() {
     evaluatedNodes++;
-    auto itr = openList->begin();
+    auto itr = prev(openList->end());
     State<S> temp = *itr;
     openList->erase(itr);
     return temp;

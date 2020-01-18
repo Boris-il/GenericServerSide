@@ -17,6 +17,7 @@ class MatrixProblem : public Searchable<T> {
   State<T> *m_initial;
   State<T> *m_goal;
 
+/*
   State<pair<int, int>> *getMin(list<State<pair<int, int>> *> l) {
     int min = INT_MAX;
     State<pair<int, int>> *s = nullptr;
@@ -28,13 +29,12 @@ class MatrixProblem : public Searchable<T> {
     }
     return s;
   }
+*/
 
  public:
   // constructor
   MatrixProblem(vector<vector<int>> *input, T *initial, T *goal) {
-    this->m_vect = this->createMatrix(input);
-    this->m_initial = new State<T>(initial);
-    this->m_goal = new State<T>(goal);
+    this->m_vect = this->createMatrix(input, initial, goal);
   }
 
   State<T> getInitialState() override {
@@ -58,6 +58,7 @@ class MatrixProblem : public Searchable<T> {
         auto *p = new pair<int, int>(current_i - 1, current_j);
         auto *st = new State<pair<int, int>>(p);
         st->setMCost(neighbour->getMCost());
+        st->setSumCost(neighbour->getSumCost());
         possibilities.push_back(st);
       }
     }
@@ -69,6 +70,7 @@ class MatrixProblem : public Searchable<T> {
         auto *p = new pair<int, int>(current_i + 1, current_j);
         auto *st = new State<pair<int, int>>(p);
         st->setMCost(neighbour->getMCost());
+        st->setSumCost(neighbour->getSumCost());
         possibilities.push_back(st);
       }
     }
@@ -79,6 +81,7 @@ class MatrixProblem : public Searchable<T> {
         auto *p = new pair<int, int>(current_i, current_j - 1);
         auto *st = new State<pair<int, int>>(p);
         st->setMCost(neighbour->getMCost());
+        st->setSumCost(neighbour->getSumCost());
         possibilities.push_back(st);
       }
     }
@@ -89,6 +92,7 @@ class MatrixProblem : public Searchable<T> {
         auto *p = new pair<int, int>(current_i, current_j + 1);
         auto *st = new State<pair<int, int>>(p);
         st->setMCost(neighbour->getMCost());
+        st->setSumCost(neighbour->getSumCost());
         possibilities.push_back(st);
       }
     }
@@ -105,7 +109,7 @@ class MatrixProblem : public Searchable<T> {
     return possibilities;
   }
 
-  vector<vector<State<pair<int, int>> * >> createMatrix(vector<vector<int>> *input) {
+  vector<vector<State<pair<int, int>> * >> createMatrix(vector<vector<int>> *input, T *initial, T *goal) {
     vector<vector<State<pair<int, int>> * >> matrix;
     this->m_matrix_size = (*input).size();
     // parse each vector of ints in the vector
@@ -117,6 +121,13 @@ class MatrixProblem : public Searchable<T> {
         auto *s = new State<pair<int, int>>(new_p);
         int cost = (*input)[i][j];
         s->setMCost((double) cost);
+        s->setSumCost((double) cost);
+        // check if this state is initial or goal
+        if (*(s->getMState()) == *initial) {
+          this->m_initial = s;
+        } else if (*(s->getMState()) == *goal) {
+          this->m_goal = s;
+        }
         single_row.push_back(s);
       }
       matrix.push_back(single_row);

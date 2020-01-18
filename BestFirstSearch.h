@@ -28,15 +28,18 @@ class BestFirstSearch : public Searcher<T> {
       list<State<T> *> successors = searchable->getAllPossible(n);
       for (auto statePtr : successors) {
         auto pos = closedList.find(*statePtr);
+        // check if successor exists in OPEN and CLOSED
         if (!this->existInOpenList(*statePtr) && pos == closedList.end()) {
           // update that we came to this successor from n
           statePtr->setMCameFrom(&n);
           // update the cost from n to current successor
-          statePtr->setMCost(n.getMCost() + statePtr->getMCost());
+          statePtr->setSumCost(n.getSumCost() + statePtr->getSumCost());
+          // add current successor to OPEN
+          this->addToOpenList(*statePtr);
         } else {
           // calculate new cost
-          int prevCost = statePtr->getMCost();
-          int newCost = prevCost + n.getMCost();
+          int prevCost = statePtr->getSumCost();
+          int newCost = statePtr->getMCost() + n.getSumCost();
           // check if the new path is better than previous
           if (newCost < prevCost) {
             if (!this->existInOpenList(*statePtr)) {
