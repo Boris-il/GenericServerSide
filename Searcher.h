@@ -79,27 +79,37 @@ template<class S>
 class BFS : public Searcher<S> {
  public:
   State<S> search(Searchable<S> *searchable) {
+    bool foundGoal = false;
+    State<S> *goal;
     set<State<S>> close;//init close
     this->addToOpenList(searchable->getInitialState()); //init open
-    State<S> *n;
-
     while (this->getOpenListSize()) {
-      *n = this->popOpenList();
-      if (searchable->isGoalState(*n)) {
+      State<S> n = this->popOpenList();
+      if (searchable->isGoalState(n)) {
+        foundGoal = true;
+        goal = &n;
         break;
       }
-      list<State<S> *> adjacents = searchable->getAllPossible(*n);
-      for (auto itr = adjacents.begin(); itr != adjacents.end(); ++itr) {
+      list<State<S> *> adjacents = searchable->getAllPossible(n);
+     /* for (auto itr = adjacents.begin(); itr != adjacents.end(); ++itr) {
         auto pos = close.find(**itr);
         if (pos == close.end() && !this->openContains(**itr)) {
           //todo not i both of lists
-          (*itr)->setMCameFrom(n);
+          (*itr)->setMCameFrom(&n);
           this->addToOpenList(**itr);
         }
+      }*/
+      for (auto adj : adjacents) {
+        auto pos = close.find(*adj);
+        if (!this->existInOpenList(*adj) && pos == close.end()) {
+          adj->setMCameFrom(&n);
+          this->addToOpenList(*adj);
+        }
       }
+      close.insert(n);
     }
-    if (searchable->isGoalState(*n)) {
-      return *n;
+    if (foundGoal) {
+      return *goal;
     } else { //no path from initial to goal.
       return NULL;
     }
