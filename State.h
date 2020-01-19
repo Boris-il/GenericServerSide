@@ -13,6 +13,7 @@ class State {
   double m_cost;
   double m_sum_cost;
   State<T> *m_cameFrom;
+  double h = 0;
 
  public:
   // constructor
@@ -67,6 +68,13 @@ class State {
 
   bool operator<(const State<T> &obj) const {
     return (obj.getSumCost() < this->m_sum_cost);
+  }
+
+  double getH() const {
+    return h;
+  }
+  void setH(double h1) {
+    this->h = h1;
   }
 
 };

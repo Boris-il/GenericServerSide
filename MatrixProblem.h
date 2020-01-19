@@ -174,6 +174,10 @@ class MatrixProblem : public Searchable<T> {
     return to_string(hashP);
   }
 
+  State<T> getGoal() override {
+    return *(this->m_goal);
+  }
+
   // END OF CLASS
 };
 

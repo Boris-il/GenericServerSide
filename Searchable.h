@@ -22,6 +22,8 @@ class Searchable {
 
   virtual string resolve(State<T> *state) = 0;
 
+  virtual State<T> getGoal() = 0;
+
 };
 
 #endif //GENERICSERVERSIDE__SEARCHABLE_H_
