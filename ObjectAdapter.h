@@ -22,6 +22,7 @@ class ObjectAdapter : public Solver<P,string>{
     /*setSearchable(p);
     State<pair<int,int>> goal = m_searcher->search(m_searchable);
     string directions = ((MatrixProblem<pair<int, int>>) m_searchable).resolveDirections(&goal);*/
+    this->m_searcher->resetSearcher();
     State<pair<int,int>> goal = m_searcher->search(p);
     string directions = p->resolve(&goal);
     return directions;

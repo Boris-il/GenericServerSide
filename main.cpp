@@ -30,7 +30,8 @@ class Main {
     //create file cache as cache manager
     CacheManager<string> *m = new FileCacheManager<string>();
     //Solver<string, string> *sl = new StringReverser();
-    Solver<Searchable<pair<int,int>>, string> *oa = new ObjectAdapter<Searchable<pair<int,int>>>(new BestFirstSearch<pair<int,int>>());
+   // Solver<Searchable<pair<int,int>>, string> *oa = new ObjectAdapter<Searchable<pair<int,int>>>(new BestFirstSearch<pair<int,int>>());
+    Solver<Searchable<pair<int,int>>, string> *oa = new ObjectAdapter<Searchable<pair<int,int>>>(new BFS<pair<int,int>>());
     //create testClientHandler with string reverser and file cache
     ClientHandler *c = new MyClientHandler<Searchable<pair<int,int>>, string>(oa, m);
     s->open(port, c);

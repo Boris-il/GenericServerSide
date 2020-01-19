@@ -66,7 +66,7 @@ class State {
 //  }
 
   bool operator<(const State<T> &obj) const {
-    return (obj.getMCost() < this->m_cost);
+    return (obj.getSumCost() < this->m_sum_cost);
   }
 
 };
@@ -74,7 +74,7 @@ class State {
 template<class T>
 struct std::hash<State<T>> {
   size_t operator()(const State<T> &obj) const {
-    return hash<double>()(obj.getMCost());
+    return hash<double>()(*(obj.getMState()));
   }
 };
 

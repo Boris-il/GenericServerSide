@@ -56,6 +56,20 @@ class Searcher : public ISearcher<S> {
     this->addToOpenList(state);
   }
 
+  State<S> getFromOpenList(State<S> state){
+    for (auto itr = openList->begin(); itr != openList->end(); ++itr) {
+      if (state.equals(*itr)) {
+        return *itr;
+      }
+    }
+    return nullptr;
+  }
+
+  void resetSearcher() {
+    this->openList->clear();
+    this->evaluatedNodes = 0;
+  }
+
   virtual State<S> search(Searchable<S> *searchable) = 0;
 
   int getNumberOfNodesEvaluated() override {
@@ -91,14 +105,14 @@ class BFS : public Searcher<S> {
         break;
       }
       list<State<S> *> adjacents = searchable->getAllPossible(n);
-     /* for (auto itr = adjacents.begin(); itr != adjacents.end(); ++itr) {
-        auto pos = close.find(**itr);
-        if (pos == close.end() && !this->openContains(**itr)) {
-          //todo not i both of lists
-          (*itr)->setMCameFrom(&n);
-          this->addToOpenList(**itr);
-        }
-      }*/
+      /* for (auto itr = adjacents.begin(); itr != adjacents.end(); ++itr) {
+         auto pos = close.find(**itr);
+         if (pos == close.end() && !this->openContains(**itr)) {
+           //todo not i both of lists
+           (*itr)->setMCameFrom(&n);
+           this->addToOpenList(**itr);
+         }
+       }*/
       for (auto adj : adjacents) {
         auto pos = close.find(*adj);
         if (!this->existInOpenList(*adj) && pos == close.end()) {
