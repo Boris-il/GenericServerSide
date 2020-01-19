@@ -15,9 +15,10 @@ class BestFirstSearch : public Searcher<T> {
  private:
 
  public:
+
   State<T> search(Searchable<T> *searchable) override {
     bool inClose = false;
-    set<State<T>> closedList;
+    multiset<State<T>> closedList;
     this->addToOpenList(searchable->getInitialState());
     while (this->getOpenListSize() > 0) {
       State<T> n = this->popOpenList();
@@ -28,18 +29,18 @@ class BestFirstSearch : public Searcher<T> {
       // get successors
       list<State<T> *> successors = searchable->getAllPossible(n);
       for (auto statePtr : successors) {
-        cout << "still here" << endl;
+        //cout << "still here" << endl;
         //auto pos = closedList.find(*statePtr);
 
         for (auto itr = closedList.begin(); itr != closedList.end(); ++itr) {
           if ((*statePtr).equals(*itr)) {
             inClose = true;
+            break;
           }
         }
 
         // check if successor exists in OPEN and CLOSED
         if (!this->existInOpenList(*statePtr) && !inClose) {
-
           // update that we came to this successor from n
           statePtr->setMCameFrom(&n);
           // update the cost from n to current successor
@@ -48,8 +49,12 @@ class BestFirstSearch : public Searcher<T> {
           this->addToOpenList(*statePtr);
         } else {
           if (inClose) {
-            auto pos = closedList.find(*statePtr);
-            *statePtr = *pos;
+            for (auto itr = closedList.begin(); itr != closedList.end(); ++itr) {
+              if ((*statePtr).equals(*itr)) {
+                *statePtr = *itr;
+                break;
+              }
+            }
           } else {
             *statePtr = this->getFromOpenList(*statePtr);
             //  *statePtr = *pos2;
@@ -60,7 +65,7 @@ class BestFirstSearch : public Searcher<T> {
           int prevCost = statePtr->getSumCost();
           int newCost = statePtr->getMCost() + n.getSumCost();
           // check if the new path is better than previous
-          if (newCost <= prevCost) {
+          if (newCost < prevCost) {
             if (!this->existInOpenList(*statePtr)) {
               this->addToOpenList(*statePtr);
             } else {

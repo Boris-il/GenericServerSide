@@ -5,22 +5,6 @@
 #include <thread>
 #include "ServerTypes.h"
 
-//namespace boot {
-//class Main {
-// public:
-//  Main() {};
-//  int main();
-//};
-//}
-//
-//int boot::Main::main() {
-//  cout << "hello" << endl;
-//  return 0;
-//}
-//
-//boot::Main m;
-//int b = m.main();
-
 void start(int *socketfd, sockaddr_in *address, ClientHandler *c) {
   unsigned len = sizeof(*address);
   socklen_t *addrlen = &len;

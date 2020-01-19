@@ -18,20 +18,6 @@ class MatrixProblem : public Searchable<T> {
   State<T> *m_initial;
   State<T> *m_goal;
 
-/*
-  State<pair<int, int>> *getMin(list<State<pair<int, int>> *> l) {
-    int min = INT_MAX;
-    State<pair<int, int>> *s = nullptr;
-    for (auto &item : l) {
-      if (item->getMCost() < min) {
-        s = item;
-        l.remove(item);
-      }
-    }
-    return s;
-  }
-*/
-
  public:
   // constructor
   MatrixProblem(vector<vector<int>> *input, T *initial, T *goal) {

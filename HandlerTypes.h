@@ -32,6 +32,7 @@ class MyTestClientHandler : public ClientHandler {
   int connectToClient();
 
 };
+
 template<class P,class S>
 class MyClientHandler : public ClientHandler {
  public:
