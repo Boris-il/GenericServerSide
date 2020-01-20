@@ -15,7 +15,7 @@ class Main {
  public:
   int main(int port) {
     //create serial server as server
-    server_side::Server *s = new MySerialServer();
+    server_side::Server *s = new MyParallelServer();
     // create a Cache Manager as a FileCacheManager that gets: Problem as a string, Solution as a State of pair
     CacheManager<string, State<pair<int, int>>> *m = new FileCacheManager<State<pair<int, int>>>();
 

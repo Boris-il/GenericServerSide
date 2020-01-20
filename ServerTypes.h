@@ -24,7 +24,11 @@ class MySerialServer : public server_side::Server {
 
  public:
 
-  //todo implement
+  virtual void open(int port, ClientHandler *c);
+  virtual void stop() {};
+};
+
+class MyParallelServer : public server_side::Server {
   virtual void open(int port, ClientHandler *c);
   virtual void stop() {};
 };
