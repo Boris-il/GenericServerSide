@@ -8,7 +8,7 @@ using namespace std;
 
 class ClientHandler {
  public:
-  //todo input and outuput stream.
+
   virtual void handleClient(int socket) = 0;
 };
 

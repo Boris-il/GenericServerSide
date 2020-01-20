@@ -16,19 +16,23 @@ class Main {
   int main(int port) {
     //create serial server as server
     server_side::Server *s = new MySerialServer();
-    //create file cache as cache manager
-    CacheManager<string> *m = new FileCacheManager<string>();
+    // create a Cache Manager as a FileCacheManager that gets: Problem as a string, Solution as a State of pair
+    CacheManager<string, State<pair<int, int>>> *m = new FileCacheManager<State<pair<int, int>>>();
+
     //Solver<string, string> *sl = new StringReverser();
+
     // solve using bestFS
-    Solver<Searchable<pair<int, int>>, string>
-      *oa = new ObjectAdapter<Searchable<pair<int, int>>>(new BestFirstSearch<pair<int, int>>());
-    Solver<Searchable<pair<int, int>>, string>
-      *oa2 = new ObjectAdapter<Searchable<pair<int, int>>>(new AStar<pair<int, int>>());
-    //create testClientHandler with string reverser and file cache
-    ClientHandler *c = new MyClientHandler<Searchable<pair<int, int>>, string>(oa, m);
+    Solver<Searchable<pair<int, int>>, State<pair<int, int>>>
+      *oa = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new BestFirstSearch<pair<int, int>>());
+    // solve using AStar
+    Solver<Searchable<pair<int, int>>, State<pair<int, int>>>
+      *oa2 = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new AStar<pair<int, int>>());
+
+    ClientHandler *c = new MyClientHandler<Searchable<pair<int, int>>, State<pair<int, int>>, string>(oa, m);
     s->open(port, c);
   }
 };
+
 }
 
 int main(int argc, char *argv[]) {

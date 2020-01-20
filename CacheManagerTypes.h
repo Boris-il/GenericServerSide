@@ -12,15 +12,14 @@
 #include <list>
 #include <fstream>
 
-template<class T>
-class FileCacheManager : public CacheManager<T> {
-  list<pair<string, T>> listCache;
-  map<string, typename list<pair<string, T>>::iterator> mapCache;
-  int m_capacity = 5;
-  T tempObj;
+template<class S>
+class FileCacheManager : public CacheManager<string, S> {
+  list<pair<string, S>> listCache;
+  map<string, typename list<pair<string, S>>::iterator> mapCache;
+  int m_capacity = 10;
  public:
 
-  void saveSolution(string key, T obj) {
+  void saveSolution(string key, S obj) {
     string temp;
     auto itr = mapCache.find(key);
 
@@ -34,19 +33,18 @@ class FileCacheManager : public CacheManager<T> {
     }
 
     //add the obj.
-    pair<string, T> p(key, obj);
+    pair<string, S> p(key, obj);
     listCache.push_front(p);
     mapCache[key] = listCache.begin();
     ofstream fsout{key, ios::binary | ios::out};
-    fsout.write((char *) &obj, sizeof(obj));
-    fsout.close();
-    // READ
-    ifstream fsin{key, ios::binary};
-    fsin.read((char *) &tempObj, sizeof(tempObj));
-    fsin.close();
+    if (fsout.is_open()) {
+      fsout.write((char *) &obj, sizeof(obj));
+      fsout.close();
+    }
   }
 
-  T getSolution(string key) {
+  S getSolution(string key) {
+    S tempObj{};
     auto itr = mapCache.find(key);
     if (itr != mapCache.end()) { //if already in cache.
       saveSolution(key, itr->second->second); //in order to uptade location to front of list.
@@ -61,10 +59,11 @@ class FileCacheManager : public CacheManager<T> {
       saveSolution(key, tempObj);
       return tempObj;
     } else {
-      throw "an error";
+      throw "not found";
     }
   }
-  bool isProblemExist(string key) {
+
+  bool isProblemExist(const string &key) {
     try {
       getSolution(key);
       return true;

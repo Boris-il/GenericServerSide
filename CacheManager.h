@@ -19,12 +19,12 @@
 //  virtual void saveSolution(Problem p, Solution s);
 using namespace std;
 
-template<class S>
+template<class P, class S>
 class CacheManager {
  public:
-  virtual bool isProblemExist(string p) = 0;
-  virtual S getSolution(string p) = 0;
-  virtual void saveSolution(string p, S s) = 0;
+  virtual bool isProblemExist(const P &) = 0;
+  virtual S getSolution(P) = 0;
+  virtual void saveSolution(P, S) = 0;
 };
 
 #endif //GENERICSERVERSIDE__CACHEMANAGER_H_

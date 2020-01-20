@@ -24,6 +24,8 @@ class State {
     this->m_cameFrom = nullptr;
   }
 
+  State() = default;;
+
   bool equals(State<T> s) {
     return *(this->m_state) == *(s.m_state);
   }
@@ -55,15 +57,11 @@ class State {
     State<T> *temp = new State<T>(*came_from);
     this->m_cameFrom = temp;
   }
-//  State<T> backTrace() {
-//    while(this->m_cameFrom != nullptr) {
-//      this->m_state = m_cameFrom;
-//    }
-//    return *(this->m_state);
-//  }
 
-//  bool operator==(const State<T> &obj) const {
-//    return (obj.getMCost() == this->m_cost);
+
+//  static string toString(State<T> s) {
+//    size_t hashP = hash <State<T>> {}(s);
+//    return to_string(hashP);
 //  }
 
   bool operator<(const State<T> &obj) const {
