@@ -9,6 +9,7 @@
 #include <queue>
 #include <set>
 #include <unordered_set>
+#include <stack>
 
 template<class S>
 class ISearcher {
@@ -70,6 +71,10 @@ class Searcher : public ISearcher<S> {
     this->evaluatedNodes = 0;
   }
 
+  void decEvaluatedNodeNumber(){
+    evaluatedNodes++;
+  }
+
   virtual State<S> search(Searchable<S> *searchable) = 0;
 
   int getNumberOfNodesEvaluated() override {
@@ -104,6 +109,7 @@ class BFS : public Searcher<S> {
       //State<S> n = this->popOpenList();
       State<S> n = open2.front();
       open2.pop();
+      this->decEvaluatedNodeNumber();
       close.insert(n);
       if (searchable->isGoalState(n)) {
         foundGoal = true;
@@ -213,6 +219,56 @@ class AStar : public Searcher<S> {
     }
   }
 
+};
+
+template<class S>
+class DFS : public Searcher<S>{
+ public:
+  State<S> search(Searchable<S> *searchable) override {
+    multiset<State<S>> close;//init close
+    stack<State<S>> open2;
+    bool inClose = false;
+    bool foundGoal = false;
+    State<S> *goal;
+    open2.push(searchable->getInitialState()); //init open
+    while (!open2.empty()) {
+     // State<S> *nPtr = open2.pop();
+      State<S> n = open2.top();
+      open2.pop();
+      this->decEvaluatedNodeNumber();
+      if (searchable->isGoalState(n)) {
+        foundGoal = true;
+        goal = &n;
+        break;
+      }
+      for (auto itr = close.begin(); itr != close.end(); ++itr) {
+        if (n.equals(*itr)) {
+          inClose = true;
+        }
+      }
+      if (!inClose) {
+        close.insert(n);
+        list<State<S> *> adjacents = searchable->getAllPossible(n);
+        /* for (auto itr = adjacents.begin(); itr != adjacents.end(); ++itr) {
+           auto pos = close.find(**itr);
+           if (pos == close.end() && !this->openContains(**itr)) {
+             //todo not i both of lists
+             (*itr)->setMCameFrom(&n);
+             this->addToOpenList(**itr);
+           }
+         }*/
+        for (auto adj : adjacents) {
+          open2.push(*adj);
+        }
+      }
+    }
+    if (foundGoal) {
+      return *goal;
+    } else { //no path from initial to goal.
+      return NULL;
+    }
+
+  }
 };
 
 #endif //GENERICSERVERSIDE__SEARCHER_H_

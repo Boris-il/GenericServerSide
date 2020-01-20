@@ -26,7 +26,7 @@ class Main {
       *oa = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new BestFirstSearch<pair<int, int>>());
     // solve using AStar
     Solver<Searchable<pair<int, int>>, State<pair<int, int>>>
-      *oa2 = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new AStar<pair<int, int>>());
+      *oa2 = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new DFS<pair<int, int>>());
 
     ClientHandler *c = new MyClientHandler<Searchable<pair<int, int>>, State<pair<int, int>>, string>(oa, m);
     s->open(port, c);
