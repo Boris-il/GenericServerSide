@@ -22,9 +22,9 @@ class Main {
     // solve using bestFS
     Solver<Searchable<pair<int, int>>, string>
       *oa = new ObjectAdapter<Searchable<pair<int, int>>>(new BestFirstSearch<pair<int, int>>());
-    // solve using AStar
     Solver<Searchable<pair<int, int>>, string>
       *oa2 = new ObjectAdapter<Searchable<pair<int, int>>>(new AStar<pair<int, int>>());
+    //create testClientHandler with string reverser and file cache
     ClientHandler *c = new MyClientHandler<Searchable<pair<int, int>>, string>(oa, m);
     s->open(port, c);
   }
