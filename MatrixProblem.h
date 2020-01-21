@@ -68,7 +68,7 @@ class MatrixProblem : public Searchable<T> {
         // get the direction between current two states
         path_str.append(getDirection(*itr, *next(itr)) + " ");
         // get the current cost
-        path_str.append("(" + to_string((int) itr->getSumCost()) + ")" + " ");
+        path_str.append("(" + to_string((int) next(itr)->getSumCost()) + ")" + " ");
       } catch (const char *c) {
         cerr << c << endl;
       }

@@ -16,8 +16,9 @@ void startP(int *socketfd, sockaddr_in *address, ClientHandler *c){
   socklen_t *addrlen = &len;
 
   struct timeval tv;
-  tv.tv_sec = 60;
+  tv.tv_sec = 120;
   tv.tv_usec = 0;
+  bool once = true;
   int socketNum = *socketfd;
   while (1) {
 
@@ -32,7 +33,10 @@ void startP(int *socketfd, sockaddr_in *address, ClientHandler *c){
     } else {
       std::thread tp(parallelClient, &client_socket1, c);
       tp.detach();
-      setsockopt(socketNum, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv); // create timeout to next client
+      if (once){
+        once = false;
+        setsockopt(socketNum, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv); // create timeout to next client
+      }
     }
 
   }
@@ -59,11 +63,11 @@ void MyParallelServer::open(int port, ClientHandler *c) {
     //return -2;
   }
   struct timeval tv;
-  tv.tv_sec = 60;
+  tv.tv_sec = 120;
   tv.tv_usec = 0;
   setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv);
 
-  if (listen(socketfd, 5) == -1) {
+  if (listen(socketfd, 15) == -1) {
     cerr << "Error during listening command" << endl;
     // return -3;
   }

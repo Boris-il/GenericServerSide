@@ -68,10 +68,11 @@ class Searcher : public ISearcher<S> {
 
   void resetSearcher() {
     this->openList->clear();
+    //cout << this->evaluatedNodes <<endl;
     this->evaluatedNodes = 0;
   }
 
-  void decEvaluatedNodeNumber(){
+  void decEvaluatedNodeNumber() {
     evaluatedNodes++;
   }
 
@@ -134,6 +135,7 @@ class BFS : public Searcher<S> {
         }
         if (!inClose) {
           adj->setMCameFrom(&n);
+          adj->setSumCost(n.getSumCost() + adj->getSumCost());
           //this->addToOpenList(*adj);
           open2.push(*adj);
           close.insert(*adj);
@@ -166,10 +168,9 @@ class AStar : public Searcher<S> {
     while (this->getOpenListSize() > 0) {
       State<S> n = this->popOpenList();
       if (searchable->isGoalState(n)) {
-        foundGoal = true;
-        goal = &n;
-        break;
+        return n;
       }
+      close.insert(n);
 
       list<State<S> *> adjacents = searchable->getAllPossible(n);
       /* for (auto itr = adjacents.begin(); itr != adjacents.end(); ++itr) {
@@ -210,37 +211,77 @@ class AStar : public Searcher<S> {
             }
           }
         }
+        if (searchable->isGoalState(*adj)) {
+          return *adj;
+        }
       }
     }
-    if (foundGoal) {
+    /*if (foundGoal) {
       return *goal;
     } else { //no path from initial to goal.
       return NULL;
-    }
+    }*/
+    return NULL;
   }
 
 };
 
 template<class S>
-class DFS : public Searcher<S>{
+class DFS : public Searcher<S> {
  public:
   State<S> search(Searchable<S> *searchable) override {
-    multiset<State<S>> close;//init close
+    list<State<S>> close;//init close
     stack<State<S>> open2;
     bool inClose = false;
-    bool foundGoal = false;
-    State<S> *goal;
-    open2.push(searchable->getInitialState()); //init open
+
+    State<S> startState = searchable->getInitialState();
+    close.push_front(startState);
+
+    open2.push(startState);
+    // this->decEvaluatedNodeNumber();
     while (!open2.empty()) {
-     // State<S> *nPtr = open2.pop();
       State<S> n = open2.top();
       open2.pop();
       this->decEvaluatedNodeNumber();
-      if (searchable->isGoalState(n)) {
-        foundGoal = true;
-        goal = &n;
-        break;
+
+      for (auto itr = close.begin(); itr != close.end(); ++itr) {
+        if (n.equals(*itr)) {
+          inClose = true;
+        }
       }
+      if (!inClose) {
+        State<S> father = close.front();
+        n.setMCameFrom(&father);
+        close.push_front(n);
+        n.setSumCost(n.getSumCost() + father.getSumCost());
+        if (searchable->isGoalState(n)) {
+          return n;
+        }
+      }
+      inClose = false;
+      list<State<S> *> adjacents = searchable->getAllPossible(n);
+      for (auto adj : adjacents) {
+        for (auto itr = close.begin(); itr != close.end(); ++itr) {
+          if (adj->equals(*itr)) {
+            inClose = true;
+          }
+        }
+        if (!inClose) {
+          open2.push(*adj);
+        }
+        inClose = false;
+      }
+    }
+
+
+
+    /*open2.push(searchable->getInitialState()); //init open
+    while (!open2.empty()) {
+      State<S> n = open2.top();
+      open2.pop();
+      this->decEvaluatedNodeNumber();
+
+
       for (auto itr = close.begin(); itr != close.end(); ++itr) {
         if (n.equals(*itr)) {
           inClose = true;
@@ -249,25 +290,28 @@ class DFS : public Searcher<S>{
       if (!inClose) {
         close.insert(n);
         list<State<S> *> adjacents = searchable->getAllPossible(n);
-        /* for (auto itr = adjacents.begin(); itr != adjacents.end(); ++itr) {
-           auto pos = close.find(**itr);
-           if (pos == close.end() && !this->openContains(**itr)) {
-             //todo not i both of lists
-             (*itr)->setMCameFrom(&n);
-             this->addToOpenList(**itr);
-           }
-         }*/
         for (auto adj : adjacents) {
-          open2.push(*adj);
+          for (auto itr = close.begin(); itr != close.end(); ++itr) {
+            if (adj->equals(*itr)) {
+              inClose = true;
+            }
+          }
+          if (!inClose) {
+            adj->setMCameFrom(&n);
+            adj->setSumCost(n.getSumCost() + adj->getSumCost());
+            open2.push(*adj);
+          }
+          inClose = false;
+          if (searchable->isGoalState(*adj)) {
+            return *adj;
+          }
         }
       }
+      inClose = false;
     }
-    if (foundGoal) {
-      return *goal;
-    } else { //no path from initial to goal.
-      return NULL;
-    }
+    return NULL;
 
+  }*/
   }
 };
 

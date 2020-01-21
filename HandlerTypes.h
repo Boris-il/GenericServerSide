@@ -11,6 +11,8 @@
 #include "SolverTypes.h"
 #include "CacheManagerTypes.h"
 #include "MatrixProblem.h"
+#include "ObjectAdapter.h"
+#include "BestFirstSearch.h"
 #include <sstream>
 #include <vector>
 #include <algorithm>
@@ -97,6 +99,7 @@ class MyClientHandler : public ClientHandler {
     bool startFinishFlag = false, finishedBuilding = false;
     vector<vector<int>> matrixVector;
     string matrixString;
+    //this->m_solver = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new BestFirstSearch<pair<int, int>>());
 
     while (1) {
       vector<int> oneRowVector;
@@ -158,6 +161,7 @@ class MyClientHandler : public ClientHandler {
 
         // resolve solution object to string
         solution_str = problemMatrix->resolve(&solutionObj) + "\n";
+        solution_str.append("Nodes Evaluated: " + to_string(((ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>> *)this->m_solver)->m_searcher->getNumberOfNodesEvaluated()) + "\n");
         // create message to send to client
         const char *msg = solution_str.c_str();
         // send the message
@@ -171,6 +175,7 @@ class MyClientHandler : public ClientHandler {
         matrixString = "";
       }
     }
+
   }
 
 };
