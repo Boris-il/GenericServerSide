@@ -6,7 +6,9 @@
 #include <thread>
 
 void parallelClient(int *client_socket1, ClientHandler *c){
-  c->handleClient(*client_socket1); //handle client
+  ClientHandler *newc = c->getClone();
+  newc->handleClient(*client_socket1); //handle client
+ // delete(newc);
   close(*client_socket1); //finish, so close the connection with client
 }
 
@@ -20,6 +22,7 @@ void startP(int *socketfd, sockaddr_in *address, ClientHandler *c){
   tv.tv_usec = 0;
   bool once = true;
   int socketNum = *socketfd;
+
   while (1) {
 
     //accept
@@ -29,7 +32,6 @@ void startP(int *socketfd, sockaddr_in *address, ClientHandler *c){
       cerr << "Error accepting client" << endl;
       //break ???
       break;
-      //return -4;
     } else {
       std::thread tp(parallelClient, &client_socket1, c);
       tp.detach();
@@ -38,7 +40,6 @@ void startP(int *socketfd, sockaddr_in *address, ClientHandler *c){
         setsockopt(socketNum, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv); // create timeout to next client
       }
     }
-
   }
 
   close(socketNum);

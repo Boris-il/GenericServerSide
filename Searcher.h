@@ -33,7 +33,7 @@ class Searcher : public ISearcher<S> {
   int getOpenListSize() {
     return openList->size();
   }
-
+  virtual Searcher *getClone() = 0;
   void addToOpenList(State<S> state) {
     openList->insert(state);
   }
@@ -98,6 +98,10 @@ class Searcher : public ISearcher<S> {
 template<class S>
 class BFS : public Searcher<S> {
  public:
+  Searcher<S> *getClone() {
+    return new BFS<S>();
+  }
+
   State<S> search(Searchable<S> *searchable) {
     queue<State<S>> open2;
     bool inClose = false;
@@ -154,6 +158,10 @@ class BFS : public Searcher<S> {
 
 template<class S>
 class AStar : public Searcher<S> {
+ public:
+  Searcher<S> *getClone() override {
+    return new AStar<S>();
+  }
   State<S> search(Searchable<S> *searchable) {
     bool foundGoal = false, inClose = false;
     multiset<State<S>> close;//init close
@@ -229,6 +237,9 @@ class AStar : public Searcher<S> {
 template<class S>
 class DFS : public Searcher<S> {
  public:
+  Searcher<S> *getClone() override {
+    return new DFS<S>();
+  }
   State<S> search(Searchable<S> *searchable) override {
     list<State<S>> close;//init close
     stack<State<S>> open2;

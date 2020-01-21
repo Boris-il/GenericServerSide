@@ -10,6 +10,7 @@ class ClientHandler {
  public:
 
   virtual void handleClient(int socket) = 0;
+  virtual ClientHandler *getClone() = 0;
 };
 
 #endif //GENERICSERVERSIDE__CLIENTHANDLER_H_

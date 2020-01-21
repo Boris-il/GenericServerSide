@@ -15,7 +15,7 @@ class Main {
  public:
   int main(int port) {
     //create serial server as server
-    server_side::Server *s = new MySerialServer();
+    server_side::Server *s = new MyParallelServer();
     // create a Cache Manager as a FileCacheManager that gets: Problem as a string, Solution as a State of pair
     CacheManager<string, State<pair<int, int>>> *m = new FileCacheManager<State<pair<int, int>>>();
 
@@ -34,7 +34,7 @@ class Main {
     Solver<Searchable<pair<int, int>>, State<pair<int, int>>>
         *oa4 = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new DFS<pair<int, int>>());
 
-    ClientHandler *c = new MyClientHandler<Searchable<pair<int, int>>, State<pair<int, int>>, string>(oa4, m);
+    ClientHandler *c = new MyClientHandler<Searchable<pair<int, int>>, State<pair<int, int>>, string>(oa, m);
     s->open(port, c);
   }
 };
@@ -42,7 +42,7 @@ class Main {
 }
 
 int main(int argc, char *argv[]) {
-  int port = atoi(argv[0]);
+  //int port = atoi(argv[0]);
   boot::Main main;
   main.main(5600);
 };

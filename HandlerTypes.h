@@ -93,13 +93,16 @@ class MyClientHandler : public ClientHandler {
     this->m_cm = cm;
   }
 
+  ClientHandler *getClone(){
+    return new MyClientHandler(this->m_solver->getClone(), this->m_cm);
+  }
+
   void handleClient(int socket) override {
-    string buffer;
+    string buffer = "";
     pair<int, int> *start = nullptr, *finish = nullptr;
     bool startFinishFlag = false, finishedBuilding = false;
     vector<vector<int>> matrixVector;
     string matrixString;
-    //this->m_solver = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new BestFirstSearch<pair<int, int>>());
 
     while (1) {
       vector<int> oneRowVector;
@@ -109,10 +112,11 @@ class MyClientHandler : public ClientHandler {
       if (!strcmp(line, "end") || !strcmp(line, "end\n") || !strcmp(line, "end\r\n")) {
         break;
       }
-      //string buffer2 = line;
-      //buffer += buffer2;
-      buffer = line; //added
+      string buffer2 = line; //###
+      buffer += buffer2; //###
+      //buffer = line; //added ####
       string firstN = buffer.substr(0, buffer.find("\n"));
+      string secondN = buffer.substr(buffer.find("\n") + 1, buffer.length()); //###
       //matrixStringVector.push_back(firstN);
       matrixString.append(firstN);
       stringstream ss(firstN);
@@ -174,6 +178,7 @@ class MyClientHandler : public ClientHandler {
         // clear the matrix string representation
         matrixString = "";
       }
+      buffer = secondN; //###
     }
 
   }

@@ -15,6 +15,9 @@ class BestFirstSearch : public Searcher<T> {
  private:
 
  public:
+  Searcher<T> *getClone() override {
+    return new BestFirstSearch<T>();
+  }
 
   State<T> search(Searchable<T> *searchable) override {
     bool inClose = false;

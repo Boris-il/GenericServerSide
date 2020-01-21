@@ -14,6 +14,9 @@ class ObjectAdapter : public Solver<P, S> {
   Searcher<pair<int, int>> *m_searcher;
   P *m_searchable;
   ObjectAdapter(Searcher<pair<int, int>> *m_searcher) : m_searcher(m_searcher) {}
+  Solver<P, S> *getClone() override {
+    return new ObjectAdapter(m_searcher->getClone());
+  }
 
 /*
   void setSearchable(Searchable<P> *s) {

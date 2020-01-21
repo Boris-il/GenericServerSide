@@ -14,5 +14,7 @@ class Solver {
   Solver() {};
 
   virtual S solve(P *p) = 0;
+
+  virtual Solver *getClone() = 0;
 };
 #endif //GENERICSERVERSIDE_CMAKE_BUILD_DEBUG_SOLVER_H_
