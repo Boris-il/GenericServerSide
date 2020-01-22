@@ -11,7 +11,7 @@ void parallelClient(int *client_socket1, ClientHandler *c){
   ClientHandler *newc = c->getClone();
   newc->handleClient(clientS); //handle client
   //delete(newc);
-  //close(*client_socket1); //finish, so close the connection with client
+  close(*client_socket1); //finish, so close the connection with client
 }
 
 void startP(int *socketfd, sockaddr_in *address, ClientHandler *c){
@@ -24,7 +24,7 @@ void startP(int *socketfd, sockaddr_in *address, ClientHandler *c){
   tv.tv_usec = 0;
   bool once = true;
   int socketNum = *socketfd;
-
+  setsockopt(socketNum, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv); // create timeout to next client
   while (1) {
 
     //accept
@@ -37,10 +37,10 @@ void startP(int *socketfd, sockaddr_in *address, ClientHandler *c){
     } else {
       std::thread tp(parallelClient, &client_socket1, c);
       tp.detach();
-      if (once){
+     /* if (once){
         once = false;
         setsockopt(socketNum, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv); // create timeout to next client
-      }
+      }*/
     }
   }
 
@@ -67,17 +67,17 @@ void MyParallelServer::open(int port, ClientHandler *c) {
     close(socketfd);
     //return -2;
   }
-  struct timeval tv;
+  /*struct timeval tv;
   tv.tv_sec = 120;
   tv.tv_usec = 0;
   setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv);
-
+*/
   if (listen(socketfd, 15) == -1) {
     cerr << "Error during listening command" << endl;
     // return -3;
   }
 
   std::thread t1(startP, &socketfd, &address, c);
-  this_thread::sleep_for(chrono::seconds(1));
+  //this_thread::sleep_for(chrono::seconds(1));
   t1.join();
 }

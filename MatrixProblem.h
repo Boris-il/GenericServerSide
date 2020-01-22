@@ -10,7 +10,7 @@
 #include <climits>
 #include "Searchable.h"
 #include <list>
-
+extern int lalala;
 template<class T>
 class MatrixProblem : public Searchable<T> {
   vector<vector<State<T> * >> m_vect;
@@ -22,6 +22,17 @@ class MatrixProblem : public Searchable<T> {
   // constructor
   MatrixProblem(vector<vector<int>> *input, T *initial, T *goal) {
     this->m_vect = this->createMatrix(input, initial, goal);
+    this->m_initial = new State<T>(initial);
+    double value = 0;
+    vector<vector<int>> temp = *input;
+    value = temp[initial->first][initial->second];
+    this->m_initial->setMCost(value);
+    this->m_initial->setSumCost(value);
+
+    this->m_goal = new State<T>(goal);
+    value = temp[goal->first][goal->second];
+    this->m_goal->setMCost(value);
+    this->m_goal->setSumCost(value);
   }
 
   State<T> getInitialState() override {
@@ -154,6 +165,7 @@ class MatrixProblem : public Searchable<T> {
       }
       matrix.push_back(single_row);
     }
+
     return matrix;
   }
 

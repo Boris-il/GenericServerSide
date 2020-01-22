@@ -9,7 +9,7 @@
 #include "MatrixProblem.h"
 #include "ObjectAdapter.h"
 #include "BestFirstSearch.h"
-
+int lalala = 0;
 namespace boot {
 class Main {
  public:
@@ -25,14 +25,14 @@ class Main {
     Solver<Searchable<pair<int, int>>, State<pair<int, int>>>
       *oa = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new BestFirstSearch<pair<int, int>>());
     // solve using AStar
-    Solver<Searchable<pair<int, int>>, State<pair<int, int>>>
+    /*Solver<Searchable<pair<int, int>>, State<pair<int, int>>>
       *oa2 = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new AStar<pair<int, int>>());
     // solve using BFS
     Solver<Searchable<pair<int, int>>, State<pair<int, int>>>
         *oa3 = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new BFS<pair<int, int>>());
     // solve using DFS
     Solver<Searchable<pair<int, int>>, State<pair<int, int>>>
-        *oa4 = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new DFS<pair<int, int>>());
+        *oa4 = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new DFS<pair<int, int>>());*/
 
     ClientHandler *c = new MyClientHandler<Searchable<pair<int, int>>, State<pair<int, int>>, string>(oa, m);
     s->open(port, c);
