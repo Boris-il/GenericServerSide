@@ -13,7 +13,7 @@ class State {
   double m_cost;
   double m_sum_cost;
   State<T> *m_cameFrom;
-  double h = 0;
+  double h;
 
  public:
   // constructor
@@ -22,7 +22,14 @@ class State {
     this->m_cost = 0;
     this->m_sum_cost = 0;
     this->m_cameFrom = nullptr;
+    this->h = 0;
   }
+
+  // destructor
+  /*virtual ~State() {
+    delete(this->m_state);
+    delete(m_cameFrom);
+  }*/
 
   State() = default;;
 

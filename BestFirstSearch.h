@@ -20,6 +20,7 @@ class BestFirstSearch : public Searcher<T> {
   }
 
   State<T> search(Searchable<T> *searchable) override {
+   cout << "in algo" << endl;
     bool inClose = false;
     multiset<State<T>> closedList;
     this->addToOpenList(searchable->getInitialState());

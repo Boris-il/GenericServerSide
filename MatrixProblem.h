@@ -35,6 +35,12 @@ class MatrixProblem : public Searchable<T> {
     this->m_goal->setSumCost(value);
   }
 
+  // destructor
+  virtual ~MatrixProblem() {
+    delete (this->m_initial);
+    delete (this->m_goal);
+  }
+
   State<T> getInitialState() override {
     return *(this->m_initial);
   }
@@ -175,6 +181,9 @@ class MatrixProblem : public Searchable<T> {
   }
 
   State<T> getGoal() override {
+    if ((this->m_goal) == nullptr) {
+      cerr << "NO GOAL IN MATRIX" << endl;
+    }
     return *(this->m_goal);
   }
 

@@ -13,6 +13,12 @@ class Solver {
   // constructor
   Solver() {};
 
+  // destructor
+  virtual ~Solver() {
+    delete (this->m_problem);
+    delete (this->m_solution);
+  }
+
   virtual S solve(P *p) = 0;
 
   virtual Solver *getClone() = 0;

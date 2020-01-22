@@ -224,19 +224,18 @@ class MyClientHandler : public ClientHandler {
     int counter = 0;
     while (x) {
       vector<int> oneRowVector;
-      char line[1024] = {0};
+      char line[4096] = {0};
 
       // read user input - single line
-      read(socket, line, 1024);
+      read(socket, line, 4096);
       //cout << line << endl;
-      if (!strcmp(line, "end") || !strcmp(line, "end\n") || !strcmp(line, "end\r\n") || !strcmp(line, "\n")
-          || !strcmp(line, "\r\n")) {
-        break;
+      if (!strcmp(line, "end")) {
+        x = false;
       }
       string checker = line;
       auto found2 = checker.find(',');
       if (found2 == string::npos) {
-       // cout << line << endl;
+        // cout << line << endl;
         continue;
       }
       string buffer2 = line; //###

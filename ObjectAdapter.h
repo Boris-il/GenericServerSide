@@ -13,7 +13,15 @@ class ObjectAdapter : public Solver<P, S> {
  public:
   Searcher<pair<int, int>> *m_searcher;
   //P *m_searchable;
+
+  // constructor
   ObjectAdapter(Searcher<pair<int, int>> *m_searcher) : m_searcher(m_searcher) {}
+
+  // destructor
+  virtual ~ObjectAdapter() {
+    delete (this->m_searcher);
+  }
+
   Solver<P, S> *getClone() override {
     return new ObjectAdapter(m_searcher->getClone());
   }
