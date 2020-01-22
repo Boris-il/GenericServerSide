@@ -93,11 +93,13 @@ class MyClientHandler : public ClientHandler {
     this->m_cm = cm;
   }
 
-  ClientHandler *getClone(){
+  ClientHandler *getClone() override {
+    cout << "clone" << endl;
     return new MyClientHandler(this->m_solver->getClone(), this->m_cm);
   }
 
   void handleClient(int socket) override {
+    cout << "in handle" << endl;
     string buffer = "";
     pair<int, int> *start = nullptr, *finish = nullptr;
     bool startFinishFlag = false, finishedBuilding = false;
@@ -109,16 +111,24 @@ class MyClientHandler : public ClientHandler {
       char line[1024] = {0};
       // read user input - single line
       read(socket, line, 1024);
-      if (!strcmp(line, "end") || !strcmp(line, "end\n") || !strcmp(line, "end\r\n")) {
+      if (!strcmp(line, "end") || !strcmp(line, "end\n") || !strcmp(line, "end\r\n") || !strcmp(line,"\n") || !strcmp(line,"\r\n")) {
         break;
       }
+
       string buffer2 = line; //###
       buffer += buffer2; //###
       //buffer = line; //added ####
       string firstN = buffer.substr(0, buffer.find("\n"));
       string secondN = buffer.substr(buffer.find("\n") + 1, buffer.length()); //###
       //matrixStringVector.push_back(firstN);
+      auto found = firstN.find("end");
+      if (found!=string::npos){
+        break;
+      }
       matrixString.append(firstN);
+      cout << firstN <<endl;
+      int numberOfCommas = count(firstN.begin(), firstN.end(), ',');
+      cerr<<numberOfCommas<<endl;
       stringstream ss(firstN);
       int i;
 
@@ -129,7 +139,8 @@ class MyClientHandler : public ClientHandler {
         }
       }
 
-      if (count(firstN.begin(), firstN.end(), ',') == 1 && !startFinishFlag) { //start
+
+      if (numberOfCommas == 1 && !startFinishFlag) { //start
         startFinishFlag = true;
         start = new pair<int, int>(oneRowVector.at(0), oneRowVector.at(1));
       } else if (startFinishFlag) { //finish
@@ -150,22 +161,27 @@ class MyClientHandler : public ClientHandler {
 
         // cast the matrix to string
         problem = MatrixProblem<pair<int, int>>::toString(matrixString);
+        cout <<matrixString<<endl;
+        cout << problemMatrix->getGoal().getMState()->first << "," << problemMatrix->getGoal().getMState()->second << endl;
 
         // send the string to FileCacheManager to check if the problem exists
-        if (this->m_cm->isProblemExist(problem)) {
-          cout << problem << " problem exists" << endl;
-          // if exists, get the solution
-          solutionObj = this->m_cm->getSolution(problem);
-        } else {
-          cout << problem + " problem does NOT exist" << endl;
-          // if doesn't exists, solve and save solution
-          solutionObj = this->m_solver->solve(problemMatrix);
-          this->m_cm->saveSolution(problem, solutionObj);
-        }
-
+        /* if (this->m_cm->isProblemExist(problem)) {
+           cout << problem << " problem exists" << endl;
+           // if exists, get the solution
+           solutionObj = this->m_cm->getSolution(problem);
+         } else {
+           cout << problem + " problem does NOT exist" << endl;
+           // if doesn't exists, solve and save solution
+           solutionObj = this->m_solver->solve(problemMatrix);
+           this->m_cm->saveSolution(problem, solutionObj);
+         }*/
+        solutionObj = this->m_solver->solve(problemMatrix); //###
         // resolve solution object to string
         solution_str = problemMatrix->resolve(&solutionObj) + "\n";
-        solution_str.append("Nodes Evaluated: " + to_string(((ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>> *)this->m_solver)->m_searcher->getNumberOfNodesEvaluated()) + "\n");
+        solution_str.append("Nodes Evaluated: " + to_string(((ObjectAdapter<Searchable<pair<int, int>>,
+                                                                            State<pair<int,
+                                                                                       int>>> *) this->m_solver)->m_searcher->getNumberOfNodesEvaluated())
+                                + "\n");
         // create message to send to client
         const char *msg = solution_str.c_str();
         // send the message

@@ -12,7 +12,7 @@ template<class P, class S>
 class ObjectAdapter : public Solver<P, S> {
  public:
   Searcher<pair<int, int>> *m_searcher;
-  P *m_searchable;
+  //P *m_searchable;
   ObjectAdapter(Searcher<pair<int, int>> *m_searcher) : m_searcher(m_searcher) {}
   Solver<P, S> *getClone() override {
     return new ObjectAdapter(m_searcher->getClone());
@@ -25,11 +25,13 @@ class ObjectAdapter : public Solver<P, S> {
 */
 
   S solve(P *p) override {
+    cout << "in OA solve" << endl;
     /*setSearchable(p);
     State<pair<int,int>> goal = m_searcher->search(m_searchable);
     string directions = ((MatrixProblem<pair<int, int>>) m_searchable).resolveDirections(&goal);*/
     this->m_searcher->resetSearcher();
     State<pair<int, int>> goal = m_searcher->search(p);
+    cout <<"got goal" <<endl;
     return goal;
   }
 

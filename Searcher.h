@@ -268,6 +268,7 @@ class DFS : public Searcher<S> {
         if (searchable->isGoalState(n)) {
           return n;
         }
+
       }
       inClose = false;
       list<State<S> *> adjacents = searchable->getAllPossible(n);
@@ -280,6 +281,7 @@ class DFS : public Searcher<S> {
         if (!inClose) {
           open2.push(*adj);
         }
+
         inClose = false;
       }
     }

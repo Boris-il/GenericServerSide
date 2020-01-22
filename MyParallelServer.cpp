@@ -4,12 +4,14 @@
 
 #include "ServerTypes.h"
 #include <thread>
+#include "HandlerTypes.h"
 
 void parallelClient(int *client_socket1, ClientHandler *c){
+  int clientS = *client_socket1;
   ClientHandler *newc = c->getClone();
-  newc->handleClient(*client_socket1); //handle client
- // delete(newc);
-  close(*client_socket1); //finish, so close the connection with client
+  newc->handleClient(clientS); //handle client
+  //delete(newc);
+  //close(*client_socket1); //finish, so close the connection with client
 }
 
 void startP(int *socketfd, sockaddr_in *address, ClientHandler *c){
