@@ -125,12 +125,14 @@ class MyClientHandler : public ClientHandler {
       if (found!=string::npos){
         break;
       }
+      auto found2 = firstN.find("\n");
+
       matrixString.append(firstN);
       cout << firstN <<endl;
       int numberOfCommas = count(firstN.begin(), firstN.end(), ',');
       cerr<<numberOfCommas<<endl;
       stringstream ss(firstN);
-      int i;
+      int i=0;
 
       while (ss >> i) { //ignore commas and push to vector.
         oneRowVector.push_back(i);
@@ -139,8 +141,20 @@ class MyClientHandler : public ClientHandler {
         }
       }
 
+      if (numberOfCommas>1){
+        matrixVector.push_back(oneRowVector);
+      }
+      else if (numberOfCommas == 1 && !startFinishFlag){
+        startFinishFlag = true;
+        start = new pair<int, int>(oneRowVector.at(0), oneRowVector.at(1));
+      } else {
+        finish = new pair<int, int>(oneRowVector.at(0), oneRowVector.at(1));
+        if (finish)
+        finishedBuilding = true;
+      }
 
-      if (numberOfCommas == 1 && !startFinishFlag) { //start
+
+      /*if (numberOfCommas == 1 && !startFinishFlag) { //start
         startFinishFlag = true;
         start = new pair<int, int>(oneRowVector.at(0), oneRowVector.at(1));
       } else if (startFinishFlag) { //finish
@@ -148,7 +162,7 @@ class MyClientHandler : public ClientHandler {
         finishedBuilding = true;
       } else {
         matrixVector.push_back(oneRowVector);
-      }
+      }*/
 
       if (finishedBuilding) {
         finishedBuilding = false;

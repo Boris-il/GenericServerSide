@@ -56,7 +56,7 @@ void MySerialServer::open(int port, ClientHandler *c) {
   tv.tv_usec = 0;
   setsockopt(socketfd, SOL_SOCKET, SO_RCVTIMEO, (const char *) &tv, sizeof tv);
 
-  if (listen(socketfd, 5) == -1) {
+  if (listen(socketfd, 10) == -1) {
     cerr << "Error during listening command" << endl;
     // return -3;
   }

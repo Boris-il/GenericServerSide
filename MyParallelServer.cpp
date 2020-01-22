@@ -60,6 +60,8 @@ void MyParallelServer::open(int port, ClientHandler *c) {
   address.sin_family = AF_INET;
   address.sin_addr.s_addr = INADDR_ANY;
   address.sin_port = htons(port);
+  int optval=1;
+  setsockopt(socketfd,SOL_SOCKET, SO_REUSEPORT, &optval, sizeof(optval));
   if (bind(socketfd, (struct sockaddr *) &address, sizeof(address)) == -1) {
     cerr << "Could not bind the socket to an IP" << endl;
     close(socketfd);
