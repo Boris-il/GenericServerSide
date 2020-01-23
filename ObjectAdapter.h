@@ -7,7 +7,8 @@
 
 #include "Solver.h"
 #include "Searcher.h"
-
+#include "BestFirstSearch.h"
+#include "search.h";
 template<class P, class S>
 class ObjectAdapter : public Solver<P, S> {
  public:
@@ -39,6 +40,15 @@ class ObjectAdapter : public Solver<P, S> {
     string directions = ((MatrixProblem<pair<int, int>>) m_searchable).resolveDirections(&goal);*/
     this->m_searcher->resetSearcher();
     State<pair<int, int>> goal = m_searcher->search(p);
+    if (goal.getMState() == nullptr){
+      goal = (new BestFirstSearch<pair<int, int>>())->search(p);
+      if(goal.getMState() == nullptr){
+        goal = (new BFS<pair<int, int>>())->search(p);
+        if(goal.getMState() == nullptr){
+          goal = (new DFS<pair<int, int>>())->search(p);
+        }
+      }
+    }
     cout <<"got goal" <<endl;
     return goal;
   }

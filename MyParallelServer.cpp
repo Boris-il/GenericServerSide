@@ -8,8 +8,9 @@
 
 void parallelClient(int *client_socket1, ClientHandler *c){
   int clientS = *client_socket1;
-  ClientHandler *newc = c->getClone();
-  newc->handleClient(clientS); //handle client
+  c=c->getClone();
+  c->handleClient(clientS);
+  //newc->handleClient(clientS); //handle client
   //delete(newc);
   close(*client_socket1); //finish, so close the connection with client
 }

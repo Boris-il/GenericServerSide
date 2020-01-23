@@ -81,6 +81,7 @@ class BestFirstSearch : public Searcher<T> {
         }
       }
     }
+    return NULL;
   }
 
 };

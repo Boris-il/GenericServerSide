@@ -25,16 +25,16 @@ class Main {
     Solver<Searchable<pair<int, int>>, State<pair<int, int>>>
       *oa = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new BestFirstSearch<pair<int, int>>());
     // solve using AStar
-    /*Solver<Searchable<pair<int, int>>, State<pair<int, int>>>
+    Solver<Searchable<pair<int, int>>, State<pair<int, int>>>
       *oa2 = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new AStar<pair<int, int>>());
     // solve using BFS
     Solver<Searchable<pair<int, int>>, State<pair<int, int>>>
         *oa3 = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new BFS<pair<int, int>>());
     // solve using DFS
     Solver<Searchable<pair<int, int>>, State<pair<int, int>>>
-        *oa4 = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new DFS<pair<int, int>>());*/
+        *oa4 = new ObjectAdapter<Searchable<pair<int, int>>, State<pair<int, int>>>(new DFS<pair<int, int>>());
 
-    ClientHandler *c = new MyClientHandler<Searchable<pair<int, int>>, State<pair<int, int>>, string>(oa, m);
+    ClientHandler *c = new MyClientHandler<Searchable<pair<int, int>>, State<pair<int, int>>, string>(oa2, m);
     s->open(port, c);
   }
 };
@@ -42,7 +42,15 @@ class Main {
 }
 
 int main(int argc, char *argv[]) {
-  //int port = atoi(argv[0]);
   boot::Main main;
-  main.main(5600);
+  int port;
+  if (argc>1){
+    port = atoi(argv[1]);
+  } else {
+    port = 5600;
+  }
+  cout << port << endl;
+  main.main(port);
+
+
 };

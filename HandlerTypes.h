@@ -319,13 +319,22 @@ class MyClientHandler : public ClientHandler {
            solutionObj = this->m_solver->solve(problemMatrix);
            this->m_cm->saveSolution(problem, solutionObj);
          }*/
-        solutionObj = this->m_solver->solve(problemMatrix); //###
+        solutionObj = this->m_solver->solve(problemMatrix);//###
+        try{
+          solution_str = problemMatrix->resolve(&solutionObj) + "\n";
+          solution_str.append("Nodes Evaluated: " + to_string(((ObjectAdapter<Searchable<pair<int, int>>,
+                                                                              State<pair<int,
+                                                                                         int>>> *) this->m_solver)->m_searcher->getNumberOfNodesEvaluated())
+                                  + "\n");
+          solution_str.append("Path length: " + to_string(problemMatrix->getPathLen()) + "\n");
+        } catch (const char *c){
+            solution_str = "NO PATH AVAILABLE\n";
+        }
+
+
+
         // resolve solution object to string
-        solution_str = problemMatrix->resolve(&solutionObj) + "\n";
-        solution_str.append("Nodes Evaluated: " + to_string(((ObjectAdapter<Searchable<pair<int, int>>,
-                                                                            State<pair<int,
-                                                                                       int>>> *) this->m_solver)->m_searcher->getNumberOfNodesEvaluated())
-                                + "\n");
+
         // create message to send to client
         const char *msg = solution_str.c_str();
         // send the message

@@ -17,6 +17,7 @@ class MatrixProblem : public Searchable<T> {
   unsigned m_matrix_size;
   State<T> *m_initial;
   State<T> *m_goal;
+  int pathLen = 0;
 
  public:
   // constructor
@@ -72,6 +73,9 @@ class MatrixProblem : public Searchable<T> {
   }
 
   string resolve(State<T> *goal) override {
+    if(goal->getMCameFrom() == nullptr){
+      throw "NO PATH";
+    }
     list<State<T>> path;
     string path_str;
     path.push_front(*goal);
@@ -79,6 +83,7 @@ class MatrixProblem : public Searchable<T> {
       path.push_front(*goal->getMCameFrom());
       goal = goal->getMCameFrom();
     }
+    pathLen = path.size();
 
     for (auto itr = path.begin(); next(itr) != path.end(); itr++) {
       try {
@@ -92,6 +97,9 @@ class MatrixProblem : public Searchable<T> {
     }
     return path_str;
 
+  }
+  int getPathLen() {
+    return this->pathLen;
   }
 
   list<State<T> *> getAllPossible(State<T> state) override {
@@ -112,22 +120,22 @@ class MatrixProblem : public Searchable<T> {
       }
     }
 
-    // check bottom cell
-    if (current_i + 1 <= boundary) {
-      neighbour = this->m_vect[current_i + 1][current_j];
+    // check left cell
+    if (current_j - 1 >= 0) {
+      neighbour = this->m_vect[current_i][current_j - 1];
       if (neighbour->getMCost() != -1) {
-        auto *p = new pair<int, int>(current_i + 1, current_j);
+        auto *p = new pair<int, int>(current_i, current_j - 1);
         auto *st = new State<pair<int, int>>(p);
         st->setMCost(neighbour->getMCost());
         st->setSumCost(neighbour->getSumCost());
         possibilities.push_back(st);
       }
     }
-    // check left cell
-    if (current_j - 1 >= 0) {
-      neighbour = this->m_vect[current_i][current_j - 1];
+    // check bottom cell
+    if (current_i + 1 <= boundary) {
+      neighbour = this->m_vect[current_i + 1][current_j];
       if (neighbour->getMCost() != -1) {
-        auto *p = new pair<int, int>(current_i, current_j - 1);
+        auto *p = new pair<int, int>(current_i + 1, current_j);
         auto *st = new State<pair<int, int>>(p);
         st->setMCost(neighbour->getMCost());
         st->setSumCost(neighbour->getSumCost());
@@ -176,7 +184,7 @@ class MatrixProblem : public Searchable<T> {
   }
 
   static string toString(string input) {
-    size_t hashP = hash < string > {}(input);
+    size_t hashP = hash<string>{}(input);
     return to_string(hashP);
   }
 
