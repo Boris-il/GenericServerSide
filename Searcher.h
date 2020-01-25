@@ -14,25 +14,23 @@
 template<class S>
 class ISearcher {
  public:
+  virtual ~ISearcher() = default;
   virtual State<S> search(Searchable<S> *searchable) = 0;
   virtual int getNumberOfNodesEvaluated() = 0;
 };
 
 template<class S>
 class Searcher : public ISearcher<S> {
-  //priority_queue<State<S>, CompareCost<S>> openList;
-  // multiset<State<S>, CostComparator<S>> *openList = new multiset<State<S>, CostComparator<S>>;
   multiset<State<S>> *openList = new multiset<State<S>>;
 
   int evaluatedNodes = 0;
  public:
-  /*Searcher() {
-    openList = new multiset<State<S>, CostComparator<State<S>>>;
-    evaluatedNodes = 0;
-  }*/
+  virtual ~Searcher() = default;
+
   int getOpenListSize() {
     return openList->size();
   }
+
   virtual Searcher *getClone() = 0;
   void addToOpenList(State<S> state) {
     openList->insert(state);
@@ -98,6 +96,8 @@ class Searcher : public ISearcher<S> {
 template<class S>
 class BFS : public Searcher<S> {
  public:
+  virtual ~BFS() = default;
+
   Searcher<S> *getClone() {
     return new BFS<S>();
   }
@@ -143,18 +143,19 @@ class BFS : public Searcher<S> {
 template<class S>
 class AStar : public Searcher<S> {
  public:
+  virtual ~AStar() = default;
+
   Searcher<S> *getClone() override {
     return new AStar<S>();
   }
   State<S> search(Searchable<S> *searchable) {
-    bool foundGoal = false, inClose = false;
+    bool inClose = false;
     multiset<State<S>> close;//init close
-    State<S> *goal;
 
     searchable->getInitialState().setSumCost(0);
     searchable->getInitialState().setH(
-        abs(searchable->getGoal().getMState()->first - searchable->getInitialState().getMState()->first)
-            + abs(searchable->getGoal().getMState()->second - searchable->getInitialState().getMState()->second));
+      abs(searchable->getGoal().getMState()->first - searchable->getInitialState().getMState()->first)
+        + abs(searchable->getGoal().getMState()->second - searchable->getInitialState().getMState()->second));
     this->addToOpenList(searchable->getInitialState());
 
     while (this->getOpenListSize() > 0) {
@@ -180,7 +181,7 @@ class AStar : public Searcher<S> {
           // update the cost from n to current successor
           adj->setSumCost(newSum);
           adj->setH(adj->getSumCost() + abs(searchable->getGoal().getMState()->first - adj->getMState()->first)
-                        + abs(searchable->getGoal().getMState()->second - adj->getMState()->second));
+                      + abs(searchable->getGoal().getMState()->second - adj->getMState()->second));
           this->addToOpenList(*adj);
 
         } else {
@@ -189,7 +190,7 @@ class AStar : public Searcher<S> {
             adj->setMCameFrom(&n);
             adj->setSumCost(newSum);
             adj->setH(adj->getSumCost() + abs(searchable->getGoal().getMState()->first - adj->getMState()->first)
-                          + abs(searchable->getGoal().getMState()->second - adj->getMState()->second));
+                        + abs(searchable->getGoal().getMState()->second - adj->getMState()->second));
             if (!this->existInOpenList(*adj)) {
               this->addToOpenList(*adj);
             }
@@ -208,6 +209,8 @@ class AStar : public Searcher<S> {
 template<class S>
 class DFS : public Searcher<S> {
  public:
+  virtual ~DFS() = default;
+
   Searcher<S> *getClone() override {
     return new DFS<S>();
   }

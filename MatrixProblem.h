@@ -10,7 +10,7 @@
 #include <climits>
 #include "Searchable.h"
 #include <list>
-extern int lalala;
+
 template<class T>
 class MatrixProblem : public Searchable<T> {
   vector<vector<State<T> * >> m_vect;
@@ -73,7 +73,7 @@ class MatrixProblem : public Searchable<T> {
   }
 
   string resolve(State<T> *goal) override {
-    if(goal->getMCameFrom() == nullptr){
+    if (goal->getMCameFrom() == nullptr) {
       throw "NO PATH";
     }
     list<State<T>> path;
@@ -104,8 +104,7 @@ class MatrixProblem : public Searchable<T> {
 
   list<State<T> *> getAllPossible(State<T> state) override {
     list<State<pair<int, int>> *> possibilities;
-    unsigned boundary = this->m_matrix_size - 1;
-    int current_i = state.getMState()->first, current_j = state.getMState()->second;
+    int current_i = state.getMState()->first, current_j = state.getMState()->second, boundary = this->m_matrix_size - 1;
     State<T> *neighbour = nullptr;
 
     // check upper cell
@@ -160,9 +159,9 @@ class MatrixProblem : public Searchable<T> {
     vector<vector<State<pair<int, int>> * >> matrix;
     this->m_matrix_size = (*input).size();
     // parse each vector of ints in the vector
-    for (int i = 0; i < this->m_matrix_size; i++) {
+    for (unsigned i = 0; i < this->m_matrix_size; i++) {
       vector<State<pair<int, int>> *> single_row;
-      for (int j = 0; j < this->m_matrix_size; j++) {
+      for (unsigned j = 0; j < this->m_matrix_size; j++) {
         // create a new state
         auto *new_p = new pair<int, int>(i, j);
         auto *s = new State<pair<int, int>>(new_p);
@@ -184,7 +183,7 @@ class MatrixProblem : public Searchable<T> {
   }
 
   static string toString(string input) {
-    size_t hashP = hash<string>{}(input);
+    size_t hashP = hash < string > {}(input);
     return to_string(hashP);
   }
 

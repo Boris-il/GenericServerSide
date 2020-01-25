@@ -8,15 +8,15 @@
 #include "Solver.h"
 #include "Searcher.h"
 #include "BestFirstSearch.h"
-#include "search.h";
+#include "search.h"
+
 template<class P, class S>
 class ObjectAdapter : public Solver<P, S> {
  public:
   Searcher<pair<int, int>> *m_searcher;
-  //P *m_searchable;
 
   // constructor
-  ObjectAdapter(Searcher<pair<int, int>> *m_searcher) : m_searcher(m_searcher) {}
+  ObjectAdapter(Searcher<pair<int, int>> *searcher) : m_searcher(searcher) {}
 
   // destructor
   virtual ~ObjectAdapter() {
@@ -27,29 +27,22 @@ class ObjectAdapter : public Solver<P, S> {
     return new ObjectAdapter(m_searcher->getClone());
   }
 
-/*
-  void setSearchable(Searchable<P> *s) {
-    m_searchable = s;
-  }
-*/
-
   S solve(P *p) override {
-    cout << "in OA solve" << endl;
-    /*setSearchable(p);
-    State<pair<int,int>> goal = m_searcher->search(m_searchable);
-    string directions = ((MatrixProblem<pair<int, int>>) m_searchable).resolveDirections(&goal);*/
+    // reset the searcher for next run
     this->m_searcher->resetSearcher();
+    // search for path to goal
     State<pair<int, int>> goal = m_searcher->search(p);
-    if (goal.getMState() == nullptr){
+
+    // try another algorithm if path wasn't found
+    if (goal.getMState() == nullptr) {
       goal = (new BestFirstSearch<pair<int, int>>())->search(p);
-      if(goal.getMState() == nullptr){
+      if (goal.getMState() == nullptr) {
         goal = (new BFS<pair<int, int>>())->search(p);
-        if(goal.getMState() == nullptr){
+        if (goal.getMState() == nullptr) {
           goal = (new DFS<pair<int, int>>())->search(p);
         }
       }
     }
-    cout <<"got goal" <<endl;
     return goal;
   }
 

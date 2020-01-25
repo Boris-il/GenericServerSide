@@ -25,13 +25,7 @@ class State {
     this->h = 0;
   }
 
-  // destructor
-  /*virtual ~State() {
-    delete(this->m_state);
-    delete(m_cameFrom);
-  }*/
-
-  State() = default;;
+  State() = default;
 
   bool equals(State<T> s) {
     return *(this->m_state) == *(s.m_state);
@@ -65,12 +59,6 @@ class State {
     this->m_cameFrom = temp;
   }
 
-
-//  static string toString(State<T> s) {
-//    size_t hashP = hash <State<T>> {}(s);
-//    return to_string(hashP);
-//  }
-
   bool operator<(const State<T> &obj) const {
     return (obj.getSumCost() < this->m_sum_cost);
   }
@@ -90,13 +78,5 @@ struct std::hash<State<T>> {
     return hash<double>()(*(obj.getMState()));
   }
 };
-
-//template<class T>
-//struct CostComparator {
-// public:
-//  bool operator()(State<T> & a, State<T> & b) const {
-//    return  (a.getMCost() < b.getMCost());
-//  }
-//};
 
 #endif //GENERICSERVERSIDE__STATE_H_

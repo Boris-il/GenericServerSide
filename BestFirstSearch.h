@@ -15,12 +15,13 @@ class BestFirstSearch : public Searcher<T> {
  private:
 
  public:
+  virtual ~BestFirstSearch() = default;
+
   Searcher<T> *getClone() override {
     return new BestFirstSearch<T>();
   }
 
   State<T> search(Searchable<T> *searchable) override {
-   cout << "in algo" << endl;
     bool inClose = false;
     multiset<State<T>> closedList;
     this->addToOpenList(searchable->getInitialState());
@@ -33,8 +34,6 @@ class BestFirstSearch : public Searcher<T> {
       // get successors
       list<State<T> *> successors = searchable->getAllPossible(n);
       for (auto statePtr : successors) {
-        //cout << "still here" << endl;
-        //auto pos = closedList.find(*statePtr);
 
         for (auto itr = closedList.begin(); itr != closedList.end(); ++itr) {
           if ((*statePtr).equals(*itr)) {
@@ -61,7 +60,6 @@ class BestFirstSearch : public Searcher<T> {
             }
           } else {
             *statePtr = this->getFromOpenList(*statePtr);
-            //  *statePtr = *pos2;
           }
 
           inClose = false;

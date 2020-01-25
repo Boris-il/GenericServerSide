@@ -11,17 +11,12 @@
 #include <iostream>
 #include <fstream>
 
-
-//todo isExist?, get, set.
-//todo Problem Class ? Solution class?
-//  virtual bool isProblemExist(Problem p);
-//  virtual Solution getSolution(Problem p);
-//  virtual void saveSolution(Problem p, Solution s);
 using namespace std;
 
 template<class P, class S>
 class CacheManager {
  public:
+  virtual ~CacheManager() = default;
   virtual bool isProblemExist(const P &) = 0;
   virtual S getSolution(P) = 0;
   virtual void saveSolution(P, S) = 0;
