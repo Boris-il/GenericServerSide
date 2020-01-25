@@ -60,7 +60,7 @@ class State {
   }
 
   bool operator<(const State<T> &obj) const {
-    return (obj.getSumCost() < this->m_sum_cost);
+    return ((obj.getSumCost() + obj.getH()) < (this->m_sum_cost + obj.getH()));
   }
 
   double getH() const {

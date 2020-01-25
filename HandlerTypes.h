@@ -115,6 +115,10 @@ class MyClientHandler : public ClientHandler {
         x = false;
       }
       string checker = line;
+      auto foundEnd = checker.find("end");
+      if (foundEnd != string::npos) {
+        break;
+      }
       auto found2 = checker.find(',');
       if (found2 == string::npos) {
         // cout << line << endl;
