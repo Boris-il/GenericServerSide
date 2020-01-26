@@ -10,7 +10,7 @@ void parallelClient(int *client_socket1, ClientHandler *c) {
   int clientS = *client_socket1;
   c = c->getClone();
   c->handleClient(clientS);
-  close(*client_socket1); //finish, so close the connection with client
+  close(clientS); //finish, so close the connection with client
 }
 
 void startP(int *socketfd, sockaddr_in *address, ClientHandler *c) {

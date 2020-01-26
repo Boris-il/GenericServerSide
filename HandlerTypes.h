@@ -111,13 +111,10 @@ class MyClientHandler : public ClientHandler {
       // read user input - single line
       read(socket, line, 4096);
       //cout << line << endl;
-      if (!strcmp(line, "end")) {
-        x = false;
-      }
       string checker = line;
       auto foundEnd = checker.find("end");
       if (foundEnd != string::npos) {
-        break;
+        x = false;
       }
       auto found2 = checker.find(',');
       if (found2 == string::npos) {
@@ -131,13 +128,6 @@ class MyClientHandler : public ClientHandler {
       string firstN = buffer.substr(0, buffer.find("\n"));
       string secondN = buffer.substr(buffer.find("\n") + 1, buffer.length()); //###
       //matrixStringVector.push_back(firstN);
-      auto found = firstN.find("end");
-      if (found != string::npos) {
-        break;
-      }
-      if (firstN == "end") {
-        break;
-      }
 
       matrixString.append(firstN);
       //  cout << firstN << endl;
