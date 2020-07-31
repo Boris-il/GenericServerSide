@@ -55,4 +55,4 @@ It sends the [test matrix](https://github.com/Boris-il/GenericServerSide/blob/ma
 Yuval Machlev,
 Boris Ilchenkov
 
-BIU University, Israel.
+Bar-Ilan University, Israel.
