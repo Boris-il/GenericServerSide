@@ -1,4 +1,4 @@
-## Searching Problems Server Side Solver
+## Searching Problems Server-Side Solver
 **The following documentation refers to an ongoing project as part of our CS major in Bar Ilan University.** 
 
 
